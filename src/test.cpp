@@ -1,21 +1,44 @@
 #include "vector.hpp"
 #include <vector>
 
+#include <iterator>
 #include <iostream>
 #include <iterator>
+#include <memory>
 
 int main()
 {
-	//vector<int> array;
-	std::vector<int> real_array;
+	std::vector<int> std_array;
 
-	//array.push_back(42);
-	//std::cout << array[0] << std::endl;
-	//std::cout << array[1] << std::endl;
+	std_array.push_back(42);
+	std_array.push_back(43);
 
-	real_array.reserve(5);
-	real_array.push_back(42);
-	std::cout << "real_array.capacity() = " << real_array.capacity() << std::endl;
-	//while (1) ;
+	std_array.pop_back();
+	std::cout << std_array.size() << std::endl;
+/*
+	ft::vector<int> ft_array;
+
+	std::cout << "empty=" << ft_array.empty() << std::endl;
+	ft_array.reserve(100);
+	for (int i = 0; i < 100; i++)
+	{
+		ft_array.push_back(i * 2);
+		std::cout << ft_array.capacity() << std::endl;
+	}
+	for (int i = 0; i < ft_array.size(); i++)
+	{
+		std::cout << "ft_array[" << i << "] = " << ft_array[i] << std::endl;
+	}
+	std::cout << "empty=" << ft_array.empty() << std::endl;
+
+	ft_array.begin();
+	//std::iterator_traits<int> begin = std_array.begin();
+	//ft_array.begin();
+	for (int i = 0; i < 100; i++)
+	{
+		std_array.push_back(i);
+		std::cout << std_array.capacity() << std::endl;
+	}
+	*/
 	return 0;
 }
