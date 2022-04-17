@@ -8,8 +8,6 @@
 #include <iterator>
 #include <cmath>
 
-//18h42
-
 namespace ft
 {
 	
@@ -18,14 +16,14 @@ template<
     class Allocator = std::allocator<T>
 > class vector
 {
-	private:
+	public:
 		//Member types
 		typedef T											value_type;
 		typedef Allocator									allocator_type;
 		typedef std::size_t									size_type;
 		//typedef typename std::ptrdiff_t						difference_type;
 		typedef value_type&      							reference;
-		//typedef const value_type&							const_reference;
+		typedef const value_type&							const_reference;
 		typedef typename allocator_type::pointer         	pointer;
 		//typedef typename allocator_type::const_pointer		const_pointer;
 		typedef pointer										iterator;
@@ -33,15 +31,20 @@ template<
 		typedef typename std::reverse_iterator<iterator>				reverse_iterator;
 		//typedef std::reverse_iterator<const_iterator>		const_reverse_iterator;
 
+	private:
 		pointer	_container;
 		//size_type	_allocated_bytes;
 		size_type	_capacity;
 		size_type	_size;
-
+	
 	public:
 		std::allocator<T> alloc;
 
 		vector();
+		//explicit vector( const Allocator& alloc );
+		//explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator());
+		//template< class InputIt > vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() );
+		//vector( const vector& other );
 		~vector();
 		//vector& operator=( const vector& other );
 		void assign( size_type count, const T& value );
@@ -65,9 +68,7 @@ template<
 		//----------
 		// Iterators |
 		//----------
-		iterator begin() { 
-			return iterator(_container); 
-		};
+		//iterator begin() { return iterator(_container); };
 		//const_iterator begin() const;
 		//iterator end() { return (&_container[_size]); };
 		//const_iterator end() const;
@@ -99,9 +100,13 @@ template<
 		//iterator erase( iterator first, iterator last );
 		void push_back( const T& value );
 		void pop_back() { _size--; };
-		void resize( size_type count );
-		//void resize( size_type count, T value = T() );
-		//void swap( vector& other );
+		void resize( size_type count, T value = T() );
+		void swap( vector& other );
+
+
+		//--------------------
+		// TOOLS FUNCTIONS
+		void increase_container_capacity(size_type new_cap);
 };
 
 template<class T, class Allocator>
@@ -119,6 +124,8 @@ template<class T, class Allocator>
 vector<T, Allocator>::~vector()
 {
 	std::cout << "vector destructor\n";
+	for (size_type i = 0; i < _size; i++)
+		alloc.destroy(_container + i);
 	alloc.deallocate(_container, _capacity);
 };
 
@@ -161,7 +168,11 @@ void vector<T, Allocator>::reserve(size_type new_cap)
 
 		_capacity = new_cap;
 		_new_container = alloc.allocate(_capacity);
-		std::memcpy(_new_container, _container, _size * sizeof(T));
+		for (size_type i = 0; i < _size; i++)
+		{
+			alloc.construct(_new_container + i, _container[i]);
+			alloc.destroy(_container + i);
+		}
 		alloc.deallocate(_container, _size);
 		_container = _new_container;
 	}
@@ -179,17 +190,67 @@ void vector<T, Allocator>::push_back(const T& value)
 		_container = alloc.allocate(_capacity);
 	}
 	else if (_capacity == _size)
-	{
-		pointer _new_container;
-
-		_capacity *= 2;
-		_new_container = alloc.allocate(_capacity);
-		std::memcpy(_new_container, _container, _size * sizeof(T));
-		alloc.deallocate(_container, _size);
-		_container = _new_container;
-	}
-	_container[_size] = value;
+		increase_container_capacity(_size + 1);
+	alloc.construct(&_container[_size], value);
 	_size++;
+}
+
+template<class T, class Allocator>
+void vector<T, Allocator>::resize( size_type count, T value )
+{
+	if (count > _size)
+	{
+		if (_capacity < count)
+			increase_container_capacity(count);
+		for (size_type i = _size; i < count; i++)
+			alloc.construct(_container + i, value);
+	}
+	else if (count < _size)
+	{
+		for (size_type i = count; i < _size; i++)
+			alloc.destroy(_container + i);
+	}
+	_size = count;
+}
+
+template<class T, class Allocator>
+void vector<T, Allocator>::swap( vector& other )
+{
+	pointer tmp_container;
+	size_type tmp_capacity;
+	size_type tmp_size;
+
+	tmp_container = _container;
+	tmp_capacity = _capacity;
+	tmp_size = _size;
+	_container = other.data();
+	_capacity = other.capacity();
+	_size = other.size();
+	other._container = tmp_container;
+	other._capacity = tmp_capacity;
+	other._size = tmp_size;
+}
+
+//----------------------------------------------
+//              TOOLS FUNCTIONS
+
+template<class T, class Allocator>
+void vector<T, Allocator>::increase_container_capacity(size_type new_cap)
+{
+	pointer _new_container;
+
+	if (_capacity * 2 >= new_cap)
+		_capacity *= 2;
+	else
+		_capacity = new_cap;
+	_new_container = alloc.allocate(_capacity);
+	for (size_type i = 0; i < _size; i++)
+	{
+		alloc.construct(_new_container + i, _container[i]);
+		alloc.destroy(_container + i);
+	}
+	alloc.deallocate(_container, _size);
+	_container = _new_container;
 }
 
 }
