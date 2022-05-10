@@ -31,47 +31,33 @@ Test::~Test()
 	std::cout << "test destrcutor\n";
 }
 
+#include <typeinfo>
+#include <string>
+#include <string_view>
+#include <type_traits>
+#include <algorithm>
 
 int main()
 {
-	const Test c;
-	ft::vector<int> std_array;
+	//std::allocator<int> *alloc = new std::allocator<int>;
+	std::vector<int> array;
 
-	std_array.push_back(1);
-	std_array.push_back(1);
-	std_array.push_back(1);
-	std_array.push_back(1);
-	std_array.push_back(1);
-	std::cout << std_array.capacity() << std::endl;
-	std_array.resize(15, 2);
-	std::cout << std_array.capacity() << std::endl;
+	array.push_back(2);
+	array.push_back(4);
+	array.push_back(6);
+	array.push_back(1);
+	array.push_back(3);
+	array.push_back(5);
+	std::vector<int> array2 = array;
 
-	ft::vector<int> ft_array;
+	//std::cout << array.capacity() << std::endl;
+	std::cout << "cap " << array2.capacity() << std::endl;
 
-	ft_array.reserve(10);
-	for (int i = 0; i < 20; i++)
+	array2.insert(++array2.begin(), 0);
+	std::cout << "cap " << array2.capacity() << std::endl;
+	for (std::vector<int>::iterator it = array2.begin(); it < array2.end(); it++)
 	{
-		ft_array.push_back(3);
-		//std::cout << ft_array.capacity() << std::endl;
+		std::cout << *it << std::endl;
 	}
-
-	std_array.swap(ft_array);
-	for (int i = 0; i < std_array.size(); i++)
-		std::cout << std_array[i] << std::endl;
-	for (int i = 0; i < ft_array.size(); i++)
-	{
-		std::cout << "ft_array[" << i << "] = " << ft_array[i] << std::endl;
-	}
-	std::cout << std_array.capacity() << std::endl;
-	std::cout << ft_array.capacity() << std::endl;
-
-	//std::iterator_traits<int> begin = std_array.begin();
-	//ft_array.begin();
-	
-	// for (int i = 0; i < 100; i++)
-	// {
-	// 	std_array.push_back(i);
-	// 	std::cout << std_array.capacity() << std::endl;
-	// }
 	return 0;
 }

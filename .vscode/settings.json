@@ -65,7 +65,9 @@
 		"unordered_map": "cpp",
 		"utility": "cpp",
 		"vector": "cpp",
-		"memory_resource": "cpp"
+		"memory_resource": "cpp",
+		"__undef_macros": "cpp",
+		"set": "cpp"
 	},
 	"makefile.launchConfigurations": [
 		{

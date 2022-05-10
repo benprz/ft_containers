@@ -4,7 +4,8 @@ NAME = ft_containers
 CC = c++
 CPPFLAGS = -g3 #-Wextra -Wall -Werror
 INC_DIR = inc/
-INC = vector.hpp
+INC = 	vector.hpp \
+		iterator.hpp
 
 SRC_DIR = src/
 SRC =	test.cpp \
