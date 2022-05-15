@@ -1,11 +1,10 @@
-make all --dry-run --always-make --keep-going --print-directory
+make all --dry-run --keep-going --print-directory
 make: Entering directory `/Users/neben/Documents/42/ft_containers'
 mkdir -p .obj
 c++ -g3  -Iinc/ -c src/test.cpp -o .obj/test.o
  
 mkdir -p .obj
 c++ -g3  -Iinc/ -c src/vector.cpp -o .obj/vector.o
- 
 c++  -Iinc/ .obj/test.o .obj/vector.o -o ft_containers
 ./ft_containers
 make: Leaving directory `/Users/neben/Documents/42/ft_containers'

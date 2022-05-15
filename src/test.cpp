@@ -1,6 +1,9 @@
 #include "vector.hpp"
 #include <vector>
 
+#include <map>
+#include "map.hpp"
+
 #include <iterator>
 #include <iostream>
 #include <iterator>
@@ -39,25 +42,7 @@ Test::~Test()
 
 int main()
 {
-	//std::allocator<int> *alloc = new std::allocator<int>;
-	std::vector<int> array;
+	ft::map<char, int> map;
 
-	array.push_back(2);
-	array.push_back(4);
-	array.push_back(6);
-	array.push_back(1);
-	array.push_back(3);
-	array.push_back(5);
-	std::vector<int> array2 = array;
-
-	//std::cout << array.capacity() << std::endl;
-	std::cout << "cap " << array2.capacity() << std::endl;
-
-	array2.insert(++array2.begin(), 0);
-	std::cout << "cap " << array2.capacity() << std::endl;
-	for (std::vector<int>::iterator it = array2.begin(); it < array2.end(); it++)
-	{
-		std::cout << *it << std::endl;
-	}
 	return 0;
 }

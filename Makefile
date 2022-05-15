@@ -5,11 +5,11 @@ CC = c++
 CPPFLAGS = -g3 #-Wextra -Wall -Werror
 INC_DIR = inc/
 INC = 	vector.hpp \
+		map.hpp \
 		iterator.hpp
 
 SRC_DIR = src/
-SRC =	test.cpp \
-		vector.cpp
+SRC =	test.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
