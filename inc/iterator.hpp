@@ -48,6 +48,10 @@ namespace ft
 			typedef typename iterator_traits<T>::reference reference;
 			typedef typename iterator_traits<T>::iterator_category iterator_category;
 
+		private:
+			pointer _ptr;
+
+		public:
 			random_access_iterator() { _ptr = NULL; };
 			explicit random_access_iterator (pointer ptr) { _ptr = ptr; };
 			template <typename Iter>
@@ -89,7 +93,6 @@ namespace ft
 			};
 
 			random_access_iterator	operator+(const int i) const { return (random_access_iterator(_ptr + i)); };
-			friend random_access_iterator operator+(int n, random_access_iterator it) { return (random_access_iterator(it._ptr + n)); };
 			random_access_iterator	operator-(const difference_type i) const { return (random_access_iterator(_ptr - i)); };
 			difference_type	operator-(const random_access_iterator &other) const { return (_ptr - other._ptr); };
 
@@ -110,10 +113,10 @@ namespace ft
 			};
 
 			reference	operator[](const difference_type i) const { return (_ptr[i]); };
-
-		private:
-			pointer _ptr;
 	};
+			
+	template <typename T>
+	random_access_iterator<T> operator+(int n, random_access_iterator<T> it) { return (random_access_iterator<T>(&*it + n)); };
 }
 
 

@@ -1,9 +1,10 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-#include <functional>
 #include <memory>
 #include <utility>
+
+#include "map_tree.hpp"
 
 namespace ft
 {
@@ -28,39 +29,7 @@ namespace ft
 			typedef typename allocator_type::const_pointer		const_pointer;
 
 		private:
-			class map_tree
-			{
-				private:
-					class node
-					{
-						public:
-							value_type			*value;
-							struct s_container	*parent;
-							struct s_container	*left_child;
-							struct s_container	*right_child;
-					};
-
-					node		*_node;
-					size_type	_size;
-					std::allocator<std::pair<const Key, T> > _alloc;
-
-				public:
-					map_tree()
-					{
-						node a;
-
-						a.value = _alloc.allocate(1);
-					};
-					~map_tree(){};
-					void insert_node()
-					{
-					};
-					void search_node();
-					void delete_node();
-			};
-
-			map_tree	_container;
-			size_type	_size;
+			map_tree<value_type, allocator_type>	_container;
 
 		public:
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {};
@@ -86,8 +55,8 @@ namespace ft
 			//---------
 			// Capacity |
 			//---------
-			bool empty() const { return (_size == 0); };
-			size_type size() const { return _size; };
+			bool empty() const;
+			size_type size() const;
 			size_type max_size() const;
 
 			//---------------

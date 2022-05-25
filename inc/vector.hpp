@@ -9,6 +9,7 @@
 #include <iostream>
 #include <iterator>
 #include <cmath>
+#include <algorithm>
 
 namespace ft
 {
@@ -44,7 +45,7 @@ namespace ft
 			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) : _alloc(alloc)
 			{
 				_size = count;
-				_capacity = _size * sizeof(T);
+				_capacity = _size;
 				_container = _alloc.allocate(_size);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, value);
@@ -55,11 +56,14 @@ namespace ft
 				size_type dist = std::distance(first, last);
 				_size = dist;
 				_capacity = _size;
-				_container = _alloc.allocate(_size);
+				_container = _alloc.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, *first++);
 			};
-			vector( const vector& other ) { *this = other; };
+			vector( const vector& other ) : _capacity(0)
+			{
+				*this = other;
+			};
 			~vector()
 			{
 				for (size_type i = 0; i < _size; i++)
@@ -69,8 +73,11 @@ namespace ft
 			vector& operator=( const vector& other )
 			{
 				_size = other._size;
-				_capacity = other._capacity;
-				_container = _alloc.allocate(_size);
+				if (_capacity < other._size)
+				{
+					_capacity = _size;
+					_container = _alloc.allocate(_capacity);
+				}
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, other[i]);
 			};
@@ -174,20 +181,37 @@ namespace ft
 			// Modifiers |
 			//----------
 			void clear() { _size = 0; };
-			iterator insert( iterator pos, const T& value ) 
+			iterator insert( iterator pos, const T& value )
 			{
-				_size++;
-				if (_size == _capacity)
+				size_type index = std::distance(begin(), pos);
+				size_type distance = std::distance(pos, end());
+
+				if (_capacity < _size + 1)
 					increase_container_capacity(_size + 1);
-				T tmp = pos;
-				_alloc.construct(pos, value);
-				for (iterator it = pos + 1; it != end(); it++)
+				value_type tmp = _container[index];
+				_container[index] = value;
+				for (size_type i = index + 1; i < _size + distance; i++)
 				{
-					_alloc.construct(it, tmp);
+					value_type tmp2 = _container[i];
+					_alloc.construct(&_container[i], tmp);
+					tmp = tmp2;
 				}
-				return (NULL);
+				_size++;
+				return (iterator(&_container[index]));
 			};
-			void insert( iterator pos, size_type count, const T& value );
+			void insert( iterator pos, size_type count, const T& value )
+			{
+				size_type	dist = std::distance(pos, end());
+				pointer		tmp = _alloc.allocate(dist);
+				iterator	tmp_it = iterator(tmp);
+
+				if (_capacity < _size + count)
+					increase_container_capacity(_size + count);
+				std::copy(end() - dist, end(), tmp);
+				std::fill(end() - dist, end() - dist + count, value);
+				std::copy(tmp_it, tmp_it + dist, &*(end() - dist +count));
+				_size += count;
+			};
 			//template< class InputIt > void insert( iterator pos, InputIt first, InputIt last );
 			//iterator erase( iterator pos );
 			//iterator erase( iterator first, iterator last );
@@ -237,8 +261,11 @@ namespace ft
 				other._size = tmp_size;
 			};
 
+		private:
 			//--------------------
 			// TOOLS FUNCTIONS
+			
+			bool _
 			void increase_container_capacity(size_type new_cap)
 			{
 				pointer new_container;
@@ -257,6 +284,52 @@ namespace ft
 				_container = new_container;
 			};
 	};
+
+	// NON-MEMBER FUNCTIONS
+	template< class T, class Alloc >
+	bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (size_t i = 0; i < lhs.size(); i++)
+			{
+				if (lhs[i] != rhs[i])
+					return false;
+			}
+			return true;
+		}
+		return false;
+	};
+
+	template< class T, class Alloc >
+	bool operator!=( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	{
+		return !(lhs == rhs);
+	};
+
+	template< class T, class Alloc >
+	bool operator<( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	{
+		return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	};
+
+	template< class T, class Alloc >
+	bool operator<=( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	{
+		return !(rhs < lhs);
+	};
+
+	template< class T, class Alloc >
+	bool operator>( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	{
+		return rhs < lhs;
+	}
+
+	template< class T, class Alloc >
+	bool operator>=( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	{
+		return !(lhs < rhs);
+	}
 }
 
 #endif
