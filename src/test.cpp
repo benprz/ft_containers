@@ -78,10 +78,10 @@ int main()
 	ft::vector<int> a;
 
 	std::cout << "cap=" << a.capacity() << std::endl;
-	a.push_back(1);
-	a.push_back(2);
-	a.push_back(3);
-	a.push_back(4);
+	a.push_back(0);
+	a.push_back(0);
+	a.push_back(0);
+	a.push_back(0);
 	
 	std::cout << "cap=" << a.capacity() << std::endl;
 	ft::vector<int>::iterator ite = a.begin() + 2;
@@ -93,7 +93,7 @@ int main()
 	std::cout << "cap=" << a.capacity() << std::endl;
 
 	std::cout << "-------- b\n";
-	std::vector<int> b;	
+	ft::vector<int> b;	
 
 	b.push_back(1);
 	b.push_back(2);
@@ -105,7 +105,7 @@ int main()
 	b.push_back(8);
 
 	std::cout << "cap=" << b.capacity() << std::endl;
-	b.insert(b.begin() + 2, 4, 0);
+	b.insert(b.begin() + 2, a.begin(), a.end() - 1);
 	for (std::size_t i = 0; i < b.size(); i++)
 		std::cout << b[i] << std::endl;
 	std::cout << "cap=" << b.capacity() << std::endl;

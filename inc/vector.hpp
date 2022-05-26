@@ -42,25 +42,27 @@ namespace ft
 		public:
 			vector() : _container(NULL), _capacity(0), _size(0) {};
 			explicit vector( const Allocator& alloc ) : _alloc(alloc) { vector(); };
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) : _alloc(alloc)
+			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) : _container(nullptr), _alloc(alloc)
 			{
-				_size = count;
-				_capacity = _size;
-				_container = _alloc.allocate(_size);
-				for (size_type i = 0; i < _size; i++)
-					_alloc.construct(_container + i, value);
+				if (_alloc_container(_size))
+				{
+					for (size_type i = 0; i < _size; i++)
+						_alloc.construct(_container + i, value);
+					_size = count;
+				}
 			};
 			template< class InputIt > 
-			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() ) : _alloc(alloc)
+			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() ) : _container(nullptr), _alloc(alloc)
 			{
 				size_type dist = std::distance(first, last);
-				_size = dist;
-				_capacity = _size;
-				_container = _alloc.allocate(_capacity);
-				for (size_type i = 0; i < _size; i++)
-					_alloc.construct(_container + i, *first++);
+				if (_alloc_container(dist))
+				{
+					for (size_type i = 0; i < _size; i++)
+						_alloc.construct(_container + i, *first++);
+					_size = dist;
+				}
 			};
-			vector( const vector& other ) : _capacity(0)
+			vector( const vector& other ) : _container(nullptr)
 			{
 				*this = other;
 			};
@@ -72,26 +74,26 @@ namespace ft
 			};
 			vector& operator=( const vector& other )
 			{
-				_size = other._size;
 				if (_capacity < other._size)
 				{
-					_capacity = _size;
-					_container = _alloc.allocate(_capacity);
+					if (!_alloc_container(_size))
+						return *this;
 				}
-				for (size_type i = 0; i < _size; i++)
+				for (size_type i = 0; i < other._size; i++)
 					_alloc.construct(_container + i, other[i]);
+				_size = other._size;
+				return (*this);
 			};
 			void assign( size_type count, const T& value )
 			{
 				if (count > _capacity)
 				{
-					_alloc.deallocate(_container, _capacity);
-					_container = _alloc.allocate(count);
-					_capacity = count;
+					if (!_alloc_container(count))
+						throw std::bad_alloc();
 				}
+				for (size_type i = 0; i < count; i++)
+					_alloc.construct(_container + i, value);
 				_size = count;
-				for (int i = 0; i < _size; i++)
-					_container[i] = value;
 			};
 			template< class InputIt >
 			void assign( InputIt first, InputIt last )
@@ -99,16 +101,15 @@ namespace ft
 				size_type dist = std::distance(first, last); 
 				if (dist > _capacity)
 				{
-					_alloc.deallocate(_container, _capacity);
-					_container = _alloc.allocate(dist);
-					_capacity = dist;
+					if (!_alloc_container(dist))
+						throw std::bad_alloc();
 				}
-				_size = dist;
-				for (size_type i = 0; first != last; i++)
+				for (size_type i = 0; i < dist; i++)
 				{
-					_container[i] = *first;
+					_alloc.construct(_container + i, *first);
 					first++;
 				}
+				_size = dist;
 			};
 			allocator_type get_allocator() const { return (_alloc); };
 
@@ -119,13 +120,13 @@ namespace ft
 			{
 				if (pos >= 0 && pos < _size)
 					return (_container[pos]);
-				throw std::out_of_range("vector");
+				throw std::out_of_range("vector: out_of_range");
 			};
 			const_reference at( size_type pos ) const
 			{
 				if (pos >= 0 && pos < _size)
 					return (_container[pos]);
-				throw std::out_of_range("vector");
+				throw std::out_of_range("vector: out_of_range");
 			};
 			reference operator[]( size_type pos ) { return (_container[pos]); };
 			const_reference operator[]( size_type pos ) const { return (_container[pos]); };
@@ -164,15 +165,17 @@ namespace ft
 				{
 					pointer _new_container;
 
-					_capacity = new_cap;
-					_new_container = _alloc.allocate(_capacity);
-					for (size_type i = 0; i < _size; i++)
+					if ((_new_container = _try_alloc(new_cap)))
 					{
-						_alloc.construct(_new_container + i, _container[i]);
-						_alloc.destroy(_container + i);
+						for (size_type i = 0; i < _size; i++)
+						{
+							_alloc.construct(_new_container + i, _container[i]);
+							_alloc.destroy(_container + i);
+						}
+						_alloc.deallocate(_container, _size);
+						_container = _new_container;
+						_capacity = new_cap;
 					}
-					_alloc.deallocate(_container, _size);
-					_container = _new_container;
 				}
 			};
 			size_type capacity() const { return (_capacity); };
@@ -187,7 +190,10 @@ namespace ft
 				size_type distance = std::distance(pos, end());
 
 				if (_capacity < _size + 1)
-					increase_container_capacity(_size + 1);
+				{
+					if (!_increase_container_capacity(_size + 1))
+						throw std::bad_alloc();
+				}
 				value_type tmp = _container[index];
 				_container[index] = value;
 				for (size_type i = index + 1; i < _size + distance; i++)
@@ -201,29 +207,53 @@ namespace ft
 			};
 			void insert( iterator pos, size_type count, const T& value )
 			{
-				size_type	dist = std::distance(pos, end());
-				pointer		tmp = _alloc.allocate(dist);
-				iterator	tmp_it = iterator(tmp);
-
-				if (_capacity < _size + count)
-					increase_container_capacity(_size + count);
-				std::copy(end() - dist, end(), tmp);
-				std::fill(end() - dist, end() - dist + count, value);
-				std::copy(tmp_it, tmp_it + dist, &*(end() - dist +count));
-				_size += count;
+				size_type dist = std::distance(pos, end());
+				pointer tmp;
+				if ((tmp = _try_alloc(dist)))
+				{
+					iterator tmp_it = iterator(tmp);
+					if (_capacity < _size + count)
+					{
+						if (!_increase_container_capacity(_size + count))
+							throw std::bad_alloc();
+					}
+					std::copy(end() - dist, end(), tmp);
+					std::fill(end() - dist, end() - dist + count, value);
+					std::copy(tmp_it, tmp_it + dist, &*(end() - dist + count));
+					_size += count;
+				}
 			};
-			//template< class InputIt > void insert( iterator pos, InputIt first, InputIt last );
+			template< class InputIt > void insert( iterator pos, InputIt first, InputIt last )
+			{
+				size_type src_dist = std::distance(first, last);	
+				size_type dst_dist = std::distance(pos, end());
+				pointer tmp;
+				if ((tmp = _try_alloc(dst_dist)))
+				{
+					iterator tmp_it = iterator(tmp);
+					if (_capacity < _size + src_dist)
+					{
+						if (!_increase_container_capacity(_size + src_dist))
+							throw std::bad_alloc();
+					}
+					std::copy(end() - dst_dist, end(), tmp);
+					std::copy(first, last, end() - dst_dist);
+					std::copy(tmp_it, tmp_it + dst_dist, &*(end() - dst_dist + src_dist));
+					_size += src_dist;
+				}
+			};
 			//iterator erase( iterator pos );
 			//iterator erase( iterator first, iterator last );
 			void push_back( const T& value )
 			{
 				if (_capacity == 0)
 				{
-					_capacity = 1;
-					_container = _alloc.allocate(_capacity);
+					if (!_alloc_container(1))
+						throw std::bad_alloc();
 				}
 				else if (_capacity == _size)
-					increase_container_capacity(_size + 1);
+					if (!_increase_container_capacity(_size + 1))
+						throw std::bad_alloc();
 				_alloc.construct(&_container[_size], value);
 				_size++;
 			};
@@ -233,7 +263,8 @@ namespace ft
 				if (count > _size)
 				{
 					if (_capacity < count)
-						increase_container_capacity(count);
+						if (!_increase_container_capacity(count))
+							throw std::bad_alloc();
 					for (size_type i = _size; i < count; i++)
 						_alloc.construct(_container + i, value);
 				}
@@ -265,23 +296,48 @@ namespace ft
 			//--------------------
 			// TOOLS FUNCTIONS
 			
-			bool _
-			void increase_container_capacity(size_type new_cap)
+			pointer _try_alloc(size_type size)
 			{
-				pointer new_container;
-
-				if (_capacity * 2 >= new_cap)
-					_capacity *= 2;
-				else
-					_capacity = new_cap;
-				new_container = _alloc.allocate(_capacity);
-				for (size_type i = 0; i < _size; i++)
+				try
 				{
-					_alloc.construct(new_container + i, _container[i]);
-					_alloc.destroy(_container + i);
+					return _alloc.allocate(size);
 				}
-				_alloc.deallocate(_container, _size);
-				_container = new_container;
+				catch (const std::bad_alloc &e)
+				{
+					throw ;
+					return nullptr;
+				}
+			}
+			bool _alloc_container(size_type size)
+			{
+				if (_container)
+					_alloc.deallocate(_container, _capacity);
+				if (!(_container = _try_alloc(size)))
+				{
+					_size = 0;
+					_capacity = 0;
+					throw std::bad_alloc();
+				}
+				_capacity = size;
+				return true;
+			}
+			bool _increase_container_capacity(size_type new_cap)
+			{
+				size_type alloc_size = _capacity * 2 >= new_cap ? _capacity * 2 : new_cap;
+				pointer new_container;
+				if ((new_container = _try_alloc(_capacity)))
+				{
+					for (size_type i = 0; i < _size; i++)
+					{
+						_alloc.construct(new_container + i, _container[i]);
+						_alloc.destroy(_container + i);
+					}
+					_alloc.deallocate(_container, _size);
+					_container = new_container;
+					_capacity = alloc_size;
+					return true;
+				}
+				return false;
 			};
 	};
 

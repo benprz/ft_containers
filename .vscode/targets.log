@@ -6,8 +6,9 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
 
-# Make data base, printed on Wed May 25 09:19:00 2022
+# Make data base, printed on Thu May 26 11:25:16 2022
 
 # Variables
 
@@ -48,7 +49,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/wr/mnp54jzn6t96q1g7r34fkkqr0000gn/T/vscode-ipc-8003f33c-83f2-4af0-9267-fb8349f8eaec.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/wr/mnp54jzn6t96q1g7r34fkkqr0000gn/T/vscode-ipc-2831a0d2-159f-427c-8e52-11ad2676d2f5.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -99,6 +100,7 @@ XPC_FLAGS = 0x0
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
+ 
 # environment
 SHLVL = 1
 # makefile (from `Makefile', line 4)
@@ -164,7 +166,7 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 1111
+VSCODE_PID = 6670
 # variable set hash-table stats:
 # Load=77/1024=8%, Rehash=0, Collisions=3/115=3%
 
@@ -174,11 +176,11 @@ VSCODE_PID = 1111
 
 # Directories
 
-# . (device 16777231, inode 11726618): 10 files, no impossibilities.
+# . (device 16777231, inode 11726618): 8 files, no impossibilities.
 # src (device 16777231, inode 16004821): 3 files, no impossibilities so far.
 # inc (device 16777231, inode 16004818): 7 files, no impossibilities so far.
 
-# 20 files, no impossibilities in 3 directories.
+# 18 files, no impossibilities in 3 directories.
 
 # Implicit Rules
 
@@ -204,7 +206,7 @@ inc/iterator.hpp:
 # Not a target:
 inc/vector.hpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-24 20:30:35
+#  Last modified 2022-05-25 15:44:56
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -252,10 +254,11 @@ fclean: clean
 .obj/test.o: src/test.cpp inc/vector.hpp inc/map.hpp inc/iterator.hpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `test'
-#  Last modified 2022-05-24 20:32:30
+#  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
+ 
 # @ := .obj/test.o
 # automatic
 # % := 
@@ -270,7 +273,7 @@ fclean: clean
 # automatic
 # ^ := src/test.cpp inc/vector.hpp inc/map.hpp inc/iterator.hpp
 # automatic
-# ? := src/test.cpp
+# ? := src/test.cpp inc/vector.hpp inc/map.hpp inc/iterator.hpp
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/17=6%
 #  commands to execute (from `Makefile', line 25):
@@ -286,11 +289,10 @@ fclean: clean
 
 ft_containers: .obj/test.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-05-24 20:32:30
+#  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
- 
 # Load=0/32=0%, Rehash=0, Collisions=0/6=0%
 #  commands to execute (from `Makefile', line 22):
 	$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
@@ -327,7 +329,7 @@ exec:
 # Not a target:
 src/test.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-24 20:32:37
+#  Last modified 2022-05-25 14:31:12
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -355,6 +357,6 @@ inc/map.hpp:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Wed May 25 09:19:00 2022
+# Finished Make data base on Thu May 26 11:25:16 2022
 
  
