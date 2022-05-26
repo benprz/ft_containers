@@ -242,8 +242,35 @@ namespace ft
 					_size += src_dist;
 				}
 			};
-			//iterator erase( iterator pos );
-			//iterator erase( iterator first, iterator last );
+			iterator erase( iterator pos )
+			{
+				if (_size == 0 || _size == 1)
+				{
+					clear();
+					return end();
+				}
+				else
+				{
+					std::copy(pos + 1, end(), pos);
+					_size--;
+					return (pos);
+				}
+			};
+			iterator erase( iterator first, iterator last )
+			{
+				size_type dist = std::distance(first, last);
+				if (_size == 0 || _size == dist)
+				{
+					clear();
+					return end();
+				}
+				else
+				{
+					std::copy(last, end(), first);
+					_size -= dist;
+					return (first);
+				}
+			}
 			void push_back( const T& value )
 			{
 				if (_capacity == 0)

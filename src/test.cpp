@@ -93,7 +93,7 @@ int main()
 	std::cout << "cap=" << a.capacity() << std::endl;
 
 	std::cout << "-------- b\n";
-	ft::vector<int> b;	
+	std::vector<int> b;	
 
 	b.push_back(1);
 	b.push_back(2);
@@ -109,5 +109,10 @@ int main()
 	for (std::size_t i = 0; i < b.size(); i++)
 		std::cout << b[i] << std::endl;
 	std::cout << "cap=" << b.capacity() << std::endl;
+
+	std::cout << "------------- b.remove\n";
+	b.erase(b.begin(), b.end() - 1);
+	for (std::size_t i = 0; i < b.size(); i++)
+		std::cout << b[i] << std::endl;
 	return 0;
 }
