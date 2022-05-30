@@ -117,6 +117,60 @@ namespace ft
 			
 	template <typename T>
 	random_access_iterator<T> operator+(int n, random_access_iterator<T> it) { return (random_access_iterator<T>(&*it + n)); };
+
+	template< class Iter >
+	class reverse_iterator
+	{
+		public:
+			typedef Iter												iterator_type;
+			typedef typename iterator_traits<Iter>::iterator_category	iterator_category;
+			typedef typename iterator_traits<Iter>::value_type			value_type;
+			typedef typename iterator_traits<Iter>::difference_type		difference_type;
+			typedef typename iterator_traits<Iter>::pointer				pointer;
+			typedef typename iterator_traits<Iter>::reference			reference;
+
+			reverse_iterator();
+			explicit reverse_iterator( iterator_type x );
+			template< class U >
+			reverse_iterator( const reverse_iterator<U>& other );
+			template< class U >
+			reverse_iterator& operator=( const reverse_iterator<U>& other );
+			iterator_type base() const;
+			reference operator*() const;
+			pointer operator->() const;
+			reference operator[]( difference_type n ) const;
+			reverse_iterator& operator++();
+			reverse_iterator& operator--();
+			reverse_iterator operator++( int );
+			reverse_iterator operator--( int );
+			reverse_iterator operator+( difference_type n ) const;
+			reverse_iterator operator-( difference_type n ) const;
+			reverse_iterator& operator+=( difference_type n );
+			reverse_iterator& operator-=( difference_type n );
+	};
+
+	template< class Iterator1, class Iterator2 >
+	bool operator==( const std::reverse_iterator<Iterator1>& lhs,
+					const std::reverse_iterator<Iterator2>& rhs );
+	template< class Iterator1, class Iterator2 >
+	bool operator!=( const std::reverse_iterator<Iterator1>& lhs,
+					const std::reverse_iterator<Iterator2>& rhs );
+	template< class Iterator1, class Iterator2 >
+	bool operator<( const std::reverse_iterator<Iterator1>& lhs,
+					const std::reverse_iterator<Iterator2>& rhs );
+	template< class Iterator1, class Iterator2 >
+	bool operator<=( const std::reverse_iterator<Iterator1>& lhs,
+					const std::reverse_iterator<Iterator2>& rhs );
+	template< class Iterator1, class Iterator2 >
+	bool operator>( const std::reverse_iterator<Iterator1>& lhs,
+					const std::reverse_iterator<Iterator2>& rhs );
+	template< class Iterator1, class Iterator2 >
+	bool operator>=( const std::reverse_iterator<Iterator1>& lhs,
+					const std::reverse_iterator<Iterator2>& rhs );
+	template <class Iterator>
+	reverse_iterator<Iterator> operator+ (typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it);
+	template <class Iterator>
+	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs);
 }
 
 

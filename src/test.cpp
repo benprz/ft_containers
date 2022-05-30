@@ -8,6 +8,7 @@
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <string>
 
 class Test
 {
@@ -114,5 +115,11 @@ int main()
 	b.erase(b.begin(), b.end() - 1);
 	for (std::size_t i = 0; i < b.size(); i++)
 		std::cout << b[i] << std::endl;
+	std::cout << "-------------------\n";
+	ft::vector<int> strv;
+	strv.push_back(1);
+	ft::vector<int> strv2(strv);
+	if (strv == strv2)
+		std::cout << strv[0] << std::endl;
 	return 0;
 }

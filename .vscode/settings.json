@@ -67,7 +67,9 @@
 		"vector": "cpp",
 		"memory_resource": "cpp",
 		"__undef_macros": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"queue": "cpp",
+		"version": "cpp"
 	},
 	"makefile.launchConfigurations": [
 		{
