@@ -1,8 +1,6 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#pragma once
-
 #include "iterator.hpp"
 
 #include <memory>
@@ -10,6 +8,7 @@
 #include <iterator>
 #include <cmath>
 #include <algorithm>
+
 
 namespace ft
 {
@@ -45,11 +44,11 @@ namespace ft
 			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) : _container(NULL), _alloc(alloc)
 			{
 				vector();
-				if (_alloc_container(_size))
+				if (_alloc_container(count))
 				{
+					_size = count;
 					for (size_type i = 0; i < _size; i++)
 						_alloc.construct(_container + i, value);
-					_size = count;
 				}
 			};
 			template< class InputIt > 
@@ -59,9 +58,9 @@ namespace ft
 				size_type dist = std::distance(first, last);
 				if (_alloc_container(dist))
 				{
+					_size = dist;
 					for (size_type i = 0; i < _size; i++)
 						_alloc.construct(_container + i, *first++);
-					_size = dist;
 				}
 			};
 			vector( const vector& other ) : _container(NULL), _capacity(0), _size(0)
@@ -143,13 +142,13 @@ namespace ft
 			// Iterators |
 			//----------
 			iterator begin() { return iterator(&_container[0]); };
-			const_iterator begin() const;
+			const_iterator begin() const { return iterator(&_container[0]); };
 			iterator end() { return iterator(&_container[_size]); };
-			const_iterator end() const;
-			reverse_iterator rbegin() { return (reverse_iterator(_container)); };
-			const_reverse_iterator rbegin() const;
-			reverse_iterator rend() { return (&_container[-1]); };
-			const_reverse_iterator rend() const;
+			const_iterator end() const { return iterator(&_container[_size]); };
+			reverse_iterator rbegin() { return (reverse_iterator(end() - 1)); };
+			const_reverse_iterator rbegin() const { return (reverse_iterator(end() - 1)); };
+			reverse_iterator rend() { return (reverse_iterator(begin() -  1)); };
+			const_reverse_iterator rend() const { return (reverse_iterator(begin() - 1)); };
 
 			//---------
 			// Capacity |
@@ -327,26 +326,14 @@ namespace ft
 			
 			pointer _try_alloc(size_type size)
 			{
-				try
-				{
-					return _alloc.allocate(size);
-				}
-				catch (const std::bad_alloc &e)
-				{
-					throw ;
-					return nullptr;
-				}
+				pointer ptr = _alloc.allocate(size);
+				return ptr;
 			}
 			bool _alloc_container(size_type size)
 			{
 				if (_container)
 					_alloc.deallocate(_container, _capacity);
-				if (!(_container = _try_alloc(size)))
-				{
-					_size = 0;
-					_capacity = 0;
-					throw std::bad_alloc();
-				}
+				_alloc.allocate(size);
 				_capacity = size;
 				return true;
 			}
