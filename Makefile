@@ -2,10 +2,10 @@
 
 NAME = ft_containers
 CC = c++
-CPPFLAGS = -g3 #-Wextra -Wall -Werror
+CPPFLAGS = -std=c++98#-Wextra -Wall -Werror
+#CPPFLAGS += -fsanitize=address -g3
 INC_DIR = inc/
 INC = 	vector.hpp \
-		map.hpp \
 		iterator.hpp
 
 SRC_DIR = src/

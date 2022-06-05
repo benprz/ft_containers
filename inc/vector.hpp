@@ -10,6 +10,7 @@
 #include <iterator>
 #include <cmath>
 #include <algorithm>
+#include <type_traits>
 
 namespace ft
 {
@@ -30,8 +31,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer				const_pointer;
 			typedef	typename ft::random_access_iterator<pointer>		iterator;
 			typedef typename ft::random_access_iterator<const_pointer>	const_iterator;
-			typedef typename std::reverse_iterator<iterator>			reverse_iterator;
-			typedef typename std::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 		private:
 			pointer				_container;
@@ -42,16 +43,15 @@ namespace ft
 		public:
 			vector() : _container(NULL), _capacity(0), _size(0) {};
 			explicit vector( const Allocator& alloc ) : _alloc(alloc) { vector(); };
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()) : _alloc(alloc)
+			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
+				: _capacity(count), _size(count), _alloc(alloc)
 			{
-				_size = count;
-				_capacity = _size;
-				_container = _alloc.allocate(_size);
+				_container = _alloc.allocate(count);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, value);
 			};
 			template< class InputIt > 
-			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() ) : _alloc(alloc)
+			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0) : _alloc(alloc)
 			{
 				size_type dist = std::distance(first, last);
 				_size = dist;
@@ -68,7 +68,8 @@ namespace ft
 			{
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_container + i);
-				_alloc.deallocate(_container, _capacity);
+				if (_capacity)
+					_alloc.deallocate(_container, _capacity);
 			};
 			vector& operator=( const vector& other )
 			{
@@ -80,26 +81,29 @@ namespace ft
 				}
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, other[i]);
+				return *this;
 			};
 			void assign( size_type count, const T& value )
 			{
 				if (count > _capacity)
 				{
-					_alloc.deallocate(_container, _capacity);
+					if (_capacity)
+						_alloc.deallocate(_container, _capacity);
 					_container = _alloc.allocate(count);
 					_capacity = count;
 				}
 				_size = count;
-				for (int i = 0; i < _size; i++)
+				for (size_type i = 0; i < _size; i++)
 					_container[i] = value;
 			};
 			template< class InputIt >
-			void assign( InputIt first, InputIt last )
+			void assign( InputIt first, InputIt last, typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
 			{
 				size_type dist = std::distance(first, last); 
 				if (dist > _capacity)
 				{
-					_alloc.deallocate(_container, _capacity);
+					if (_capacity)
+						_alloc.deallocate(_container, _capacity);
 					_container = _alloc.allocate(dist);
 					_capacity = dist;
 				}
@@ -140,13 +144,13 @@ namespace ft
 			// Iterators |
 			//----------
 			iterator begin() { return iterator(&_container[0]); };
-			const_iterator begin() const;
+			const_iterator begin() const { std::cout << "cit\n"; return const_iterator(&_container[0]); };
 			iterator end() { return iterator(&_container[_size]); };
-			const_iterator end() const;
-			reverse_iterator rbegin() { return (reverse_iterator(_container)); };
-			const_reverse_iterator rbegin() const;
-			reverse_iterator rend() { return (&_container[-1]); };
-			const_reverse_iterator rend() const;
+			const_iterator end() const { return const_iterator(&_container[_size]); };
+			reverse_iterator rbegin() { return reverse_iterator(end()); };
+			const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); };
+			reverse_iterator rend() { return reverse_iterator(begin() - 1); };
+			const_reverse_iterator rend() const { return const_reverse_iterator(begin() - 1); };
 
 			//---------
 			// Capacity |
@@ -171,7 +175,8 @@ namespace ft
 						_alloc.construct(_new_container + i, _container[i]);
 						_alloc.destroy(_container + i);
 					}
-					_alloc.deallocate(_container, _size);
+					if (_capacity)
+						_alloc.deallocate(_container, _size);
 					_container = _new_container;
 				}
 			};
@@ -187,7 +192,7 @@ namespace ft
 				size_type distance = std::distance(pos, end());
 
 				if (_capacity < _size + 1)
-					increase_container_capacity(_size + 1);
+					_increase_container_capacity(_size + 1);
 				value_type tmp = _container[index];
 				_container[index] = value;
 				for (size_type i = index + 1; i < _size + distance; i++)
@@ -201,20 +206,61 @@ namespace ft
 			};
 			void insert( iterator pos, size_type count, const T& value )
 			{
-				size_type	dist = std::distance(pos, end());
-				pointer		tmp = _alloc.allocate(dist);
-				iterator	tmp_it = iterator(tmp);
-
+				size_type dist = std::distance(pos, end());
+				pointer tmp = _alloc.allocate(dist);
+				iterator tmp_it = iterator(tmp);
 				if (_capacity < _size + count)
-					increase_container_capacity(_size + count);
+					_increase_container_capacity(_size + count);
 				std::copy(end() - dist, end(), tmp);
 				std::fill(end() - dist, end() - dist + count, value);
-				std::copy(tmp_it, tmp_it + dist, &*(end() - dist +count));
+				std::copy(tmp_it, tmp_it + dist, &*(end() - dist + count));
+				_alloc.deallocate(tmp, dist);
 				_size += count;
 			};
-			//template< class InputIt > void insert( iterator pos, InputIt first, InputIt last );
-			//iterator erase( iterator pos );
-			//iterator erase( iterator first, iterator last );
+			template< class InputIt >
+			void insert( iterator pos, InputIt first, InputIt last, typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
+			{
+				size_type src_dist = std::distance(first, last);	
+				size_type dst_dist = std::distance(pos, end());
+				pointer tmp = _alloc.allocate(dst_dist);
+				iterator tmp_it = iterator(tmp);
+				if (_capacity < _size + src_dist)
+					_increase_container_capacity(_size + src_dist);
+				std::copy(end() - dst_dist, end(), tmp);
+				std::copy(first, last, end() - dst_dist);
+				std::copy(tmp_it, tmp_it + dst_dist, &*(end() - dst_dist + src_dist));
+				_alloc.deallocate(tmp, dst_dist);
+				_size += src_dist;
+			};
+			iterator erase( iterator pos )
+			{
+				if (_size == 0 || _size == 1)
+				{
+					clear();
+					return end();
+				}
+				else
+				{
+					std::copy(pos + 1, end(), pos);
+					_size--;
+					return (pos);
+				}
+			};
+			iterator erase( iterator first, iterator last )
+			{
+				size_type dist = std::distance(first, last);
+				if (_size == 0 || _size == dist)
+				{
+					clear();
+					return end();
+				}
+				else
+				{
+					std::copy(last, end(), first);
+					_size -= dist;
+					return (first);
+				}
+			}
 			void push_back( const T& value )
 			{
 				if (_capacity == 0)
@@ -223,7 +269,7 @@ namespace ft
 					_container = _alloc.allocate(_capacity);
 				}
 				else if (_capacity == _size)
-					increase_container_capacity(_size + 1);
+					_increase_container_capacity(_size + 1);
 				_alloc.construct(&_container[_size], value);
 				_size++;
 			};
@@ -233,7 +279,7 @@ namespace ft
 				if (count > _size)
 				{
 					if (_capacity < count)
-						increase_container_capacity(count);
+						_increase_container_capacity(count);
 					for (size_type i = _size; i < count; i++)
 						_alloc.construct(_container + i, value);
 				}
@@ -261,12 +307,11 @@ namespace ft
 				other._size = tmp_size;
 			};
 
-		private:
+		public:
 			//--------------------
 			// TOOLS FUNCTIONS
-			
-			bool _
-			void increase_container_capacity(size_type new_cap)
+
+			void _increase_container_capacity(size_type new_cap)
 			{
 				pointer new_container;
 
@@ -280,7 +325,8 @@ namespace ft
 					_alloc.construct(new_container + i, _container[i]);
 					_alloc.destroy(_container + i);
 				}
-				_alloc.deallocate(_container, _size);
+				if (_capacity)
+					_alloc.deallocate(_container, _size);
 				_container = new_container;
 			};
 	};
@@ -302,31 +348,31 @@ namespace ft
 	};
 
 	template< class T, class Alloc >
-	bool operator!=( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	bool operator!=( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )
 	{
 		return !(lhs == rhs);
 	};
 
 	template< class T, class Alloc >
-	bool operator<( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	bool operator<( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )
 	{
 		return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	};
 
 	template< class T, class Alloc >
-	bool operator<=( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	bool operator<=( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )
 	{
 		return !(rhs < lhs);
 	};
 
 	template< class T, class Alloc >
-	bool operator>( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	bool operator>( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )
 	{
 		return rhs < lhs;
 	}
 
 	template< class T, class Alloc >
-	bool operator>=( const std::vector<T,Alloc>& lhs, const std::vector<T,Alloc>& rhs )
+	bool operator>=( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )
 	{
 		return !(lhs < rhs);
 	}

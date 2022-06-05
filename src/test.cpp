@@ -42,6 +42,7 @@ Test::~Test()
 
 int main()
 {
+	/*
 	std::vector<int> vec;
 	
 	vec.push_back(0);
@@ -109,5 +110,26 @@ int main()
 	for (std::size_t i = 0; i < b.size(); i++)
 		std::cout << b[i] << std::endl;
 	std::cout << "cap=" << b.capacity() << std::endl;
+
+	std::cout << "-------- c\n";
+	ft::vector<int> c(a.begin(), a.end());
+	for (std::size_t i = 0; i < c.size(); i++)
+		std::cout << c[i] << std::endl;
+	
+	ft::vector<int> d;
+
+	//ft::vector<int>::reverse_iterator rit = c.rbegin();
+
+	d.insert(d.begin(), a.begin(), a.end());
+	std::cout << std::endl;
+	std::cout << *(d.rend() - 1) << std::endl;
+	std::cout << *(d.rend() - 2) << std::endl << std::endl;
+	for (std::size_t i = 0; i < d.size(); i++)
+		std::cout << d[i] << std::endl;
+	*/
+
+	ft::vector<int> vec;
+	ft::vector<int>::const_iterator it = vec.begin();
+
 	return 0;
 }
