@@ -1,16 +1,24 @@
 {
-	// Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
-	// Pointez pour afficher la description des attributs existants.
-	// Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"type": "lldb",
-			"request": "launch",
-			"name": "Debug",
-			"program": "${workspaceFolder}/ft_containers",
-			"args": [],
-			"cwd": "${workspaceFolder}"
-		}
-	]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug",
+      "program": "${workspaceFolder}/ft_containers",
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": true,
+      "externalConsole": false,
+      "cwd": "/Users/neben/Documents/42/ft_containers",
+      "program": "/Users/neben/Documents/42/ft_containers/build/Debug/outDebug",
+      "MIMode": "gdb"
+    }
+  ]
 }

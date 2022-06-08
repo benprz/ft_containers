@@ -6,7 +6,8 @@ CPPFLAGS = -std=c++98#-Wextra -Wall -Werror
 #CPPFLAGS += -fsanitize=address -g3
 INC_DIR = inc/
 INC = 	vector.hpp \
-		iterator.hpp
+		iterator.hpp \
+		utils.hpp
 
 SRC_DIR = src/
 SRC =	test.cpp

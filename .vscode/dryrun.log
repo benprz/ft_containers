@@ -1,5 +1,9 @@
 make all --dry-run --keep-going --print-directory
 make: Entering directory `/Users/neben/Documents/42/ft_containers'
+mkdir -p .obj
+c++ -std=c++98 -Iinc/ -c src/test.cpp -o .obj/test.o
+c++  -Iinc/ .obj/test.o -o ft_containers
+ 
 ./ft_containers
 make: Leaving directory `/Users/neben/Documents/42/ft_containers'
  
