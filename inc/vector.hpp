@@ -13,6 +13,8 @@
 #include <algorithm>
 #include <type_traits>
 
+#include <vector>
+
 namespace ft
 {
 	template<
@@ -36,10 +38,10 @@ namespace ft
 			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 		private:
+			allocator_type		_alloc;
 			pointer				_container;
 			size_type			_capacity;
 			size_type			_size;
-			allocator_type		_alloc;
 		
 		public:
 			vector() : _container(NULL), _capacity(0), _size(0) {};
@@ -218,19 +220,19 @@ namespace ft
 				_alloc.deallocate(tmp, dist);
 				_size += count;
 			};
-			/*
 			template< class InputIt >
 			void insert( iterator pos, InputIt first, InputIt last, typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
 			{
+				if (!_check_iterators_copy_assignability(first, last))
+					throw std::exception();
+
 				size_type src_dist = std::distance(first, last);	
 				size_type dst_dist = std::distance(pos, end());
-
 				pointer tmp = _alloc.allocate(dst_dist);
 				iterator tmp_it = iterator(tmp);
 
 				if (_capacity < _size + src_dist)
 					_increase_container_capacity(_size + src_dist);
-
 				for (size_type i = 0; i < dst_dist; i++)
 					_alloc.destroy(&*(end() - dst_dist + i));
 				for (size_type i = 0; i < dst_dist; i++)
@@ -239,55 +241,9 @@ namespace ft
 					_alloc.construct(&*(end() - dst_dist + i), *first);
 				for (size_type i = 0; i < dst_dist; i++, tmp_it++)
 					_alloc.construct(&*(end() - dst_dist + src_dist + i), *tmp_it);
-
 				_alloc.deallocate(tmp, dst_dist);
 				_size += src_dist;
-			};*/
-
-
-		template<class InputIt>
-		typename ft::enable_if<!ft::is_integral<InputIt>::value, bool>::type
-		validate_iterator_values(InputIt first, InputIt last, size_t range) {
-			pointer reserved_buffer;
-			reserved_buffer = _alloc.allocate(range);
-			bool result = true;
-			size_t i = 0;
-
-			for (;first != last; ++first, ++i) {
-				try { reserved_buffer[i] = *first; }
-				catch (...) { result = false; break; }
-			}
-			_alloc.deallocate(reserved_buffer, range);
-			return result;
-		}
-
-		template <class InputIterator>
-    	void insert ( iterator position, InputIterator first, InputIterator last, typename std::enable_if<!std::is_integral<InputIterator>::value, int>::type = 0 )
-		{
-			//if (position > end()) throw std::out_of_range("out of range");
-			
-			size_type pos = std::distance(begin(), position);
-			size_type count = std::distance(first, last);
-
-			std::cout << "(_capacity=" << _capacity << ")" << std::endl;
-			if (!validate_iterator_values(first, last, count))
-				 throw std::exception();
-
-			while(_capacity < _size + count)
-				_capacity *= 2;
-			pointer tmp = _alloc.allocate(_capacity);
-			for (size_type i = 0; i < pos; i++)
-				_alloc.construct( tmp + i , *(_container + i) );
-			for (size_type i = pos; i < pos + count; i++, first++)
-				_alloc.construct( (tmp + i) , *first );
-			for (size_type i = pos; i < _size; i++)
-				_alloc.construct( tmp + i + count, *(_container + i) );
-			for (size_type i = 0; i < _size; i++)
-				_alloc.destroy(_container + i);
-			_alloc.deallocate(_container, _capacity);
-			_container = tmp;
-			_size += count;
-		};
+			};
 			iterator erase( iterator pos )
 			{
 				if (_size == 0 || _size == 1)
@@ -348,10 +304,20 @@ namespace ft
 			};
 			void swap (vector& other)
 			{
-				ft::swapContent(_container, other._container);
-				ft::swapContent(_size, other._size);
-				ft::swapContent(_capacity, other._capacity);
-				ft::swapContent(_alloc, other._alloc);
+				allocator_type alloc = _alloc;
+				pointer container = _container;
+				size_type size = _size;
+				size_type capacity = _capacity;
+
+				_alloc = other._alloc;
+				_container = other._container;
+				_size = other._size;
+				_capacity = other._capacity;
+
+				other._alloc = alloc;
+				other._container = container;
+				other._size = size;
+				other._capacity = capacity;
 			};
 
 		private:
@@ -376,6 +342,28 @@ namespace ft
 					_alloc.deallocate(_container, _size);
 				_container = new_container;
 			};
+			template<class InputIt>
+			bool _check_iterators_copy_assignability(InputIt first, InputIt last)
+			{
+				pointer var = _alloc.allocate(1);
+				bool ret = true;
+
+				while (first != last)
+				{	
+					try
+					{
+						var[0] = *first;
+					}
+					catch (...)
+					{
+						ret = false;
+						break ;
+					}
+					first++;
+				}
+				_alloc.deallocate(var, 1);
+				return ret;
+			}
 	};
 
 	// NON-MEMBER FUNCTIONS
