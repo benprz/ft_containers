@@ -10,31 +10,6 @@
 #include <memory>
 #include <string>
 
-class Test
-{
-private:
-	/* data */
-public:
-	Test(/* args */);
-	Test(const Test& other);
-	~Test();
-};
-
-Test::Test(/* args */)
-{
-	std::cout << "test constrcutor\n";
-}
-
-Test::Test(const Test& other)
-{
-	std::cout << "test constrcutor 2\n";
-}
-
-Test::~Test()
-{
-	std::cout << "test destrcutor\n";
-}
-
 #include <typeinfo>
 #include <string>
 #include <string_view>
@@ -43,6 +18,7 @@ Test::~Test()
 
 int main()
 {
+	/*
 	std::vector<int> vec;
 	
 	vec.push_back(0);
@@ -121,5 +97,9 @@ int main()
 	ft::vector<int> strv2(strv);
 	if (strv == strv2)
 		std::cout << strv[0] << std::endl;
+	*/
+
+	ft::vector<int> v;
+	ft::vector<int>::const_iterator it = v.begin();
 	return 0;
 }

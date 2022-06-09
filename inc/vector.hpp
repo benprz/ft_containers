@@ -9,7 +9,6 @@
 #include <cmath>
 #include <algorithm>
 
-
 namespace ft
 {
 	template<

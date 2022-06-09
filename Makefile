@@ -10,7 +10,7 @@ INC = 	vector.hpp \
 		iterator.hpp
 
 SRC_DIR = src/
-SRC =	main.cpp
+SRC =	test.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
