@@ -197,7 +197,6 @@ int main()
 	std::cout << *(d.rend() - 2) << std::endl << std::endl;
 	for (std::size_t i = 0; i < d.size(); i++)
 		std::cout << d[i] << std::endl;
-	*/
 
 	// SEGFAULT <
 	//ft::vector<int> vec;
@@ -207,8 +206,12 @@ int main()
 	ft::vector<int> vec2;
 
 	vec2.insert(vec2.begin(), vec.begin(), vec.end());
-
+*/
 
 	//insert_test_3<int>(ft::vector<int>());
+
+	ft::vector<int> v(1, 1);
+	ft::vector<int>::const_iterator it = v.begin();
+
 	return 0;
 }

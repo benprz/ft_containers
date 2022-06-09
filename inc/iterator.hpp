@@ -51,7 +51,7 @@ namespace ft
 
 		public:
 			random_access_iterator() { _ptr = NULL; };
-			explicit random_access_iterator (pointer ptr) { _ptr = ptr; };
+			explicit random_access_iterator (const pointer ptr) { _ptr = ptr; };
 			template <typename Iter>
 			random_access_iterator (const random_access_iterator<Iter>& other ) { *this = other; };
 			random_access_iterator& operator=(const random_access_iterator& other)

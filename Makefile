@@ -2,15 +2,14 @@
 
 NAME = ft_containers
 CC = c++
-CPPFLAGS = -std=c++98#-Wextra -Wall -Werror
+CPPFLAGS = -fsanitize=address #-std=c++98#-Wextra -Wall -Werror
 #CPPFLAGS += -fsanitize=address -g3
 INC_DIR = inc/
 INC = 	vector.hpp \
-		iterator.hpp \
-		utils.hpp
+		iterator.hpp
 
 SRC_DIR = src/
-SRC =	test.cpp
+SRC = test.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
@@ -20,7 +19,7 @@ OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
 all: $(NAME) exec
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
+	$(CC) $(CPPFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp $(addprefix $(INC_DIR),$(INC))
 	mkdir -p $(@D)
