@@ -116,6 +116,88 @@ namespace ft
 	template <typename T>
 	random_access_iterator<T> operator+(int n, random_access_iterator<T> it) { return (random_access_iterator<T>(&*it + n)); };
 
+/*
+	template <typename T>
+	class const_random_access_iterator
+	{
+		public:
+			typedef typename iterator_traits<T>::difference_type difference_type;
+			typedef typename iterator_traits<T>::value_type value_type;
+			typedef typename iterator_traits<T>::pointer pointer;
+			typedef typename iterator_traits<T>::reference reference;
+			typedef typename iterator_traits<T>::iterator_category iterator_category;
+
+		private:
+			pointer _ptr;
+
+		public:
+			const_random_access_iterator() { _ptr = NULL; };
+			explicit const_random_access_iterator (const pointer ptr) { _ptr = ptr; };
+			template <typename Iter>
+			const_random_access_iterator (const const_random_access_iterator<Iter>& other ) { *this = other; };
+			const_random_access_iterator& operator=(const const_random_access_iterator& other)
+			{
+				_ptr = other._ptr;
+				return *this;
+			}
+			~const_random_access_iterator() {};
+
+			bool operator==(const const_random_access_iterator &other) const { return (_ptr == other._ptr); };
+			bool operator!=(const const_random_access_iterator &other) const { return (_ptr != other._ptr); };
+
+			reference	operator*() const { return (*_ptr); };
+			pointer	operator->() const { return (_ptr); };
+
+			const_random_access_iterator& operator++(void) 
+			{
+				_ptr++;
+				return (*this); 
+			};
+			const_random_access_iterator operator++(int)
+			{
+				const_random_access_iterator tmp = *this;
+				_ptr++;
+				return (tmp);
+			};
+			const_random_access_iterator& operator--(void) 
+			{
+				_ptr--;
+				return (*this); 
+			};
+			const_random_access_iterator operator--(int)
+			{
+				const_random_access_iterator tmp = *this;
+				_ptr--;
+				return (tmp);
+			};
+
+			const_random_access_iterator	operator+(const int i) const { return (const_random_access_iterator(_ptr + i)); };
+			const_random_access_iterator	operator-(const difference_type i) const { return (const_random_access_iterator(_ptr - i)); };
+			difference_type	operator-(const const_random_access_iterator &other) const { return (_ptr - other._ptr); };
+
+			bool	operator<(const const_random_access_iterator &other) const { return (_ptr < other._ptr); };
+			bool	operator>(const const_random_access_iterator &other) const { return (_ptr > other._ptr); };
+			bool	operator<=(const const_random_access_iterator &other) const { return (_ptr <= other._ptr); };
+			bool	operator>=(const const_random_access_iterator &other) const { return (_ptr >= other._ptr); };
+
+			const_random_access_iterator&	operator+=(difference_type i) 
+			{
+				_ptr += i; 
+				return (*this);
+			};
+			const_random_access_iterator&	operator-=(difference_type i)
+			{
+				_ptr -= i;
+				return (*this);
+			};
+
+			reference	operator[](const difference_type i) const { return (_ptr[i]); };
+	};
+			
+	template <typename T>
+	const_random_access_iterator<T> operator+(int n, const_random_access_iterator<T> it) { return (const_random_access_iterator<T>(&*it + n)); };
+*/
+
 	template< class Iter >
 	class reverse_iterator
 	{
