@@ -23,18 +23,18 @@ namespace ft
 	{
 		public:
 			//Member types
-			typedef T													value_type;
-			typedef Allocator											allocator_type;
-			typedef std::size_t											size_type;
-			typedef std::ptrdiff_t										difference_type;
-			typedef typename allocator_type::reference      			reference;
-			typedef typename allocator_type::const_reference			const_reference;
-			typedef typename allocator_type::pointer         			pointer;
-			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef	typename ft::random_access_iterator<pointer>		iterator;
-			typedef typename ft::random_access_iterator<const_pointer>	const_iterator;
-			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef T														value_type;
+			typedef Allocator												allocator_type;
+			typedef std::size_t												size_type;
+			typedef std::ptrdiff_t											difference_type;
+			typedef typename allocator_type::reference      				reference;
+			typedef typename allocator_type::const_reference				const_reference;
+			typedef typename allocator_type::pointer         				pointer;
+			typedef typename allocator_type::const_pointer					const_pointer;
+			typedef	typename ft::random_access_iterator<value_type>			iterator;
+			typedef typename ft::random_access_iterator<const value_type>	const_iterator;
+			typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
 		private:
 			allocator_type		_alloc;
@@ -46,14 +46,15 @@ namespace ft
 			vector() : _container(NULL), _capacity(0), _size(0) {};
 			explicit vector( const Allocator& alloc ) : _alloc(alloc) { vector(); };
 			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
-				: _capacity(count), _size(count), _alloc(alloc)
+				:  _alloc(alloc), _capacity(count), _size(count)
 			{
 				_container = _alloc.allocate(count);
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, value);
 			};
 			template< class InputIt > 
-			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0) : _alloc(alloc)
+			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
+				: _alloc(alloc)
 			{
 				size_type dist = std::distance(first, last);
 				_size = dist;
@@ -62,7 +63,8 @@ namespace ft
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct(_container + i, *first++);
 			};
-			vector( const vector& other ) : _capacity(0)
+			vector( const vector& other )
+				: _capacity(0)
 			{
 				*this = other;
 			};
@@ -139,21 +141,21 @@ namespace ft
 			const_reference front() const { return (_container[0]); };
 			reference back() { return (_container[_size - 1]); };
 			const_reference back() const { return (_container[_size - 1]); };
-			T* data() { return (&_container[0]); };
-			const T* data() const { return (&_container[0]); };
+			T* data() { return _container; };
+			const T* data() const { return _container; };
 
 			//----------
 			// Iterators |
 			//----------
 			iterator begin() { return iterator(_container); };
 			iterator end() { return iterator(_container + _size); };
-			reverse_iterator rbegin() { return reverse_iterator(end() - 1); };
-			reverse_iterator rend() { return reverse_iterator(begin() - 1); };
-
 			const_iterator begin() const { return const_iterator(_container); };
 			const_iterator end() const { return const_iterator(_container + _size); };
-			const_reverse_iterator rbegin() const { return const_reverse_iterator(end() - 1); };
-			const_reverse_iterator rend() const { return const_reverse_iterator(begin() - 1); };
+
+			reverse_iterator rbegin() { return reverse_iterator(end()); };
+			reverse_iterator rend() { return reverse_iterator(begin()); };
+			const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); };
+			const_reverse_iterator rend() const { return const_reverse_iterator(begin()); };
 
 			//---------
 			// Capacity |
@@ -171,8 +173,7 @@ namespace ft
 				{
 					pointer _new_container;
 
-					_capacity = new_cap;
-					_new_container = _alloc.allocate(_capacity);
+					_new_container = _alloc.allocate(new_cap);
 					for (size_type i = 0; i < _size; i++)
 					{
 						_alloc.construct(_new_container + i, _container[i]);
@@ -180,6 +181,7 @@ namespace ft
 					}
 					if (_capacity)
 						_alloc.deallocate(_container, _size);
+					_capacity = new_cap;
 					_container = _new_container;
 				}
 			};

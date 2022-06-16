@@ -77,7 +77,14 @@
 	"csignal": "cpp",
 	"fstream": "cpp",
 	"iomanip": "cpp",
-	"queue": "cpp"
+	"queue": "cpp",
+	"*.ipp": "cpp",
+	"regex": "cpp",
+	"future": "cpp",
+	"numeric": "cpp",
+	"random": "cpp",
+	"thread": "cpp",
+	"variant": "cpp"
 },
   "makefile.launchConfigurations": [
     {
