@@ -6,27 +6,25 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
- 
 
-# Make data base, printed on Mon Jun  6 19:19:06 2022
+# Make data base, printed on Tue Jun 14 19:16:20 2022
 
 # Variables
 
- 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
-# makefile (from `Makefile', line 16)
+# makefile (from `Makefile', line 15)
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
-# makefile (from `Makefile', line 13)
+# makefile (from `Makefile', line 12)
 SRC = test.cpp
 # environment
 VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # makefile (from `Makefile', line 5)
-CPPFLAGS = -std=c++98
+CPPFLAGS = -fsanitize=address 
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
 # automatic
@@ -36,27 +34,25 @@ CURDIR := /Users/neben/Documents/42/ft_containers
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"fr","availableLanguages":{"*":"fr"},"_languagePackId":"25fe6a3290ec415596628d4afc87a88c.fr","_translationsConfigFile":"/Users/neben/Library/Application Support/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/tcf.json","_cacheRoot":"/Users/neben/Library/Application Support/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr","_resolvedLanguagePackCoreLocation":"/Users/neben/Library/Application Support/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5","_corruptedFile":"/Users/neben/Library/Application Support/Code/clp/25fe6a3290ec415596628d4afc87a88c.fr/corrupted.info","_languagePackSupport":true}
+VSCODE_NLS_CONFIG = {"locale":"fr","availableLanguages":{"*":"fr"},"_languagePackId":"90c96d63e4230154cb1307da73de84dd.fr","_translationsConfigFile":"/Users/neben/Library/Application Support/Code/clp/90c96d63e4230154cb1307da73de84dd.fr/tcf.json","_cacheRoot":"/Users/neben/Library/Application Support/Code/clp/90c96d63e4230154cb1307da73de84dd.fr","_resolvedLanguagePackCoreLocation":"/Users/neben/Library/Application Support/Code/clp/90c96d63e4230154cb1307da73de84dd.fr/4af164ea3a06f701fe3e89a2bcbb421d2026b68f","_corruptedFile":"/Users/neben/Library/Application Support/Code/clp/90c96d63e4230154cb1307da73de84dd.fr/corrupted.info","_languagePackSupport":true}
 # environment
 _ = /usr/bin/make
 # makefile (from `Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
-# makefile (from `Makefile', line 15)
+# makefile (from `Makefile', line 14)
 OBJ_DIR = .obj/
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
 __CFBundleIdentifier = com.microsoft.VSCode
 # environment
-INFOPATH = /opt/homebrew/share/info:
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/wr/mnp54jzn6t96q1g7r34fkkqr0000gn/T/vscode-ipc-37245fac-b842-4e54-b2d2-050cbd7f501f.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/wr/mnp54jzn6t96q1g7r34fkkqr0000gn/T/vscode-ipc-f12fe16e-58ba-4809-a958-514250ac730b.sock
 # environment
 VSCODE_CWD = /
 # environment
-PATH = /opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Library/Apple/usr/bin
+PATH = /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Library/Apple/usr/bin
 # environment
-LSCOLORS = Exfxcxdxbxegedabagacad
+LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
 VSCODE_LOG_STACK = false
 # environment
@@ -64,7 +60,7 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.wqnrTiJlaG/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.M90L9WUzWd/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -72,13 +68,9 @@ VSCODE_PIPE_LOGGING = true
 # environment
 PWD = /Users/neben/Documents/42/ft_containers
 # environment
-HOMEBREW_CELLAR = /opt/homebrew/Cellar
-# environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
 # makefile (from `Makefile', line 7)
 INC_DIR = inc/
-# environment
-MANPATH = /opt/homebrew/share/man::
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -86,11 +78,13 @@ HOME = /Users/neben
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
-VSCODE_CODE_CACHE_PATH = /Users/neben/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+VSCODE_CODE_CACHE_PATH = /Users/neben/Library/Application Support/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
 # environment
 LOGNAME = neben
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+ZSH = /Users/neben/.oh-my-zsh
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # automatic
@@ -112,14 +106,15 @@ USER = neben
 # makefile
 .DEFAULT_GOAL := all
 # makefile (from `Makefile', line 3)
- 
 NAME = ft_containers
+# environment
+LESS = -R
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
 MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
 # makefile (from `Makefile', line 8)
-INC = vector.hpp iterator.hpp utils.hpp
+INC = vector.hpp iterator.hpp
 # default
 .VARIABLES := 
 # environment
@@ -127,35 +122,31 @@ TMPDIR = /var/folders/wr/mnp54jzn6t96q1g7r34fkkqr0000gn/T/
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /Users/neben/Library/Application Support/Code/1.67.2-main.sock
+VSCODE_IPC_HOOK = /Users/neben/Library/Application Support/Code/1.68.0-main.sock
 # makefile
 MAKEFLAGS = Rrqp
-# environment
-PROMPT = %F{red}[neben@%m] %F{green}%d%f > 
 # environment
 MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.20109128.20109134
-# environment
-HOMEBREW_PREFIX = /opt/homebrew
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.21688678.21688684
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # automatic
 +F = $(notdir $+)
-# environment
-HOMEBREW_REPOSITORY = /opt/homebrew
 # environment
 __CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x1
 # environment
 COMMAND_MODE = unix2003
 # default
 MAKEFILES := 
-# makefile (from `Makefile', line 12)
+# makefile (from `Makefile', line 11)
 SRC_DIR = src/
 # automatic
 <F = $(notdir $<)
+# environment
+PAGER = less
 # environment
 LC_ALL = C
 # automatic
@@ -167,9 +158,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 3156
+VSCODE_PID = 21226
 # variable set hash-table stats:
-# Load=77/1024=8%, Rehash=0, Collisions=3/115=3%
+# Load=74/1024=7%, Rehash=0, Collisions=3/112=3%
 
 # Pattern-specific Variable Values
 
@@ -177,16 +168,16 @@ VSCODE_PID = 3156
 
 # Directories
 
-# . (device 16777231, inode 11726618): 13 files, no impossibilities.
-# src (device 16777231, inode 16004821): 3 files, no impossibilities so far.
-# inc (device 16777231, inode 16004818): 7 files, no impossibilities so far.
+# . (device 16777233, inode 11726618): 13 files, no impossibilities.
+# src (device 16777233, inode 16004821): 3 files, no impossibilities so far.
+# inc (device 16777233, inode 16004818): 6 files, no impossibilities so far.
 
-# 23 files, no impossibilities in 3 directories.
+# 22 files, no impossibilities in 3 directories.
 
 # Implicit Rules
 
-.obj/%.o: src/%.cpp inc/vector.hpp inc/iterator.hpp inc/utils.hpp
-#  commands to execute (from `Makefile', line 26):
+.obj/%.o: src/%.cpp inc/vector.hpp inc/iterator.hpp
+#  commands to execute (from `Makefile', line 25):
 	mkdir -p $(@D)
 	$(CC) $(CPPFLAGS) -I$(INC_DIR) -c $< -o $@
 	
@@ -198,7 +189,7 @@ VSCODE_PID = 3156
 # Not a target:
 inc/iterator.hpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-03 18:26:22
+#  Last modified 2022-06-14 19:15:58
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -206,9 +197,8 @@ inc/iterator.hpp:
 
 # Not a target:
 inc/vector.hpp:
- 
 #  Implicit rule search has been done.
-#  Last modified 2022-06-06 19:18:40
+#  Last modified 2022-06-14 16:48:04
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -238,7 +228,7 @@ all: ft_containers exec
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-06 19:18:53
+#  Last modified 2022-06-14 19:08:49
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -249,14 +239,14 @@ fclean: clean
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 36):
+#  commands to execute (from `Makefile', line 35):
 	/bin/rm -f $(NAME)
 	
 
-.obj/test.o: src/test.cpp inc/vector.hpp inc/iterator.hpp inc/utils.hpp
+.obj/test.o: src/test.cpp inc/vector.hpp inc/iterator.hpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: `test'
-#  Last modified 2022-06-04 17:58:15
+#  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -266,18 +256,18 @@ fclean: clean
 # automatic
 # * := test
 # automatic
-# + := src/test.cpp inc/vector.hpp inc/iterator.hpp inc/utils.hpp
+# + := src/test.cpp inc/vector.hpp inc/iterator.hpp
 # automatic
 # | := 
 # automatic
 # < := src/test.cpp
 # automatic
-# ^ := src/test.cpp inc/vector.hpp inc/iterator.hpp inc/utils.hpp
+# ^ := src/test.cpp inc/vector.hpp inc/iterator.hpp
 # automatic
-# ? := inc/vector.hpp
+# ? := src/test.cpp inc/vector.hpp inc/iterator.hpp
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/17=6%
-#  commands to execute (from `Makefile', line 26):
+#  commands to execute (from `Makefile', line 25):
 	mkdir -p $(@D)
 	$(CC) $(CPPFLAGS) -I$(INC_DIR) -c $< -o $@
 	
@@ -290,13 +280,13 @@ fclean: clean
 
 ft_containers: .obj/test.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-04 17:58:15
+#  Last modified 2022-06-14 19:08:42
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/6=0%
-#  commands to execute (from `Makefile', line 23):
-	$(CC) $(CFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
+#  commands to execute (from `Makefile', line 22):
+	$(CC) $(CPPFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
 	
 
 re:
@@ -304,7 +294,8 @@ re:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 39):
+ 
+#  commands to execute (from `Makefile', line 38):
 	$(MAKE) fclean
 	$(MAKE) all
 	
@@ -314,44 +305,34 @@ clean:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 33):
+#  commands to execute (from `Makefile', line 32):
 	/bin/rm -rf $(OBJ_DIR)
 	
-
-# Not a target:
-inc/utils.hpp:
-#  Implicit rule search has been done.
-#  Last modified 2022-06-01 17:48:44
-#  File has been updated.
-#  Successfully updated.
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 exec:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 30):
+#  commands to execute (from `Makefile', line 29):
 	./$(NAME)
 	
 
 # Not a target:
 src/test.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-04 17:14:53
+#  Last modified 2022-06-14 19:08:26
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # files hash-table stats:
-# Load=15/1024=1%, Rehash=0, Collisions=0/46=0%
+# Load=14/1024=1%, Rehash=0, Collisions=0/43=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
 
- 
 # No general (`VPATH' variable) search path.
 
 # # of strings in strcache: 1
@@ -359,6 +340,6 @@ src/test.cpp:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Jun  6 19:19:06 2022
+# Finished Make data base on Tue Jun 14 19:16:20 2022
 
  
