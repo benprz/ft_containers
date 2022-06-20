@@ -2,11 +2,12 @@
 
 NAME = ft_containers
 CC = c++
-CPPFLAGS = -fsanitize=address #-std=c++98#-Wextra -Wall -Werror
-#CPPFLAGS += -fsanitize=address -g3
+CPPFLAGS = #-std=c++98#-Wextra -Wall -Werror
+CPPFLAGS += -fsanitize=address -g3
 INC_DIR = inc/
 INC =	map.hpp \
-		map_tree.hpp	
+		map_tree.hpp \
+		vector.hpp
 
 SRC_DIR = src/
 SRC = test_map.cpp

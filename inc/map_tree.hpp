@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <utility>
+#include <iostream>
 
 namespace ft
 {
@@ -20,24 +21,28 @@ namespace ft
 			typedef std::size_t									size_type;
 			typedef std::ptrdiff_t								difference_type;
 			typedef Compare										key_compare;
-			typedef Allocator									allocator_type;
-			typedef typename allocator_type::reference			reference;
-			typedef typename allocator_type::const_reference	const_reference;
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
-
-		private:
-			class node
+			class _node
 			{
 				public:
-					value_type	pair;
-					node		*parent;
-					node		*left_child;
-					node		*right_child;
+					value_type	pair_value;
+					_node		*parent;
+					_node		*left_child;
+					_node		*right_child;
+
+				_node(key_type key, mapped_type value) : pair_value(key, value), parent(NULL), left_child(NULL), right_child(NULL) {}
+
 			};
+		private:
+
+
+			typedef typename Allocator::template rebind<_node>::other	allocator_type;
+			typedef typename allocator_type::reference					reference;
+			typedef typename allocator_type::const_reference			const_reference;
+			typedef typename allocator_type::pointer					pointer;
+			typedef typename allocator_type::const_pointer				const_pointer;
 
 			allocator_type	_alloc;
-			node*			_root;
+			pointer			_root;
 			size_type		_size;
 
 		public:
@@ -49,52 +54,48 @@ namespace ft
 			void deallocate_tree()
 			{
 				deallocate_node(_root);
-				_root = NULL;
 				_size = 0;
 			}
-			void deallocate_node(node* n)
+			void deallocate_node(pointer& node)
 			{
-				while (n)
+				if (node)
 				{
-					if (n->left_child)
-						deallocate_node(n->left_child);
-					if (n->right_child)
-						deallocate_node(n->right_child);
-					_alloc.deallocate(n, 1);
+					deallocate_node(node->left_child);
+					deallocate_node(node->right_child);
+					_alloc.deallocate(node, 1);
+					node = NULL;
 				}
 			}
 			void insert_node(key_type key, mapped_type value)
 			{
-				node* new_node = _alloc(1);
-				new_node->pair.first = key;
-				new_node->pair.second = value;
+				pointer new_node = _alloc.allocate(1);
+				_alloc.construct(new_node, key, value);
 				if (!_root)
 					_root = new_node;
 				else
 				{
-					node* n = _root;
-					while (n->left_child || n->right_child)
+					pointer node = _root;
+					while (node->left_child || node->right_child)
 					{
-						if (key < n->pair.first)
-							n = n->left_child;
-						else
-							n = n->right_child;
-
+						if (node->left_child && key < node->pair_value.first)
+							node = node->left_child;
+						else if (node->right_child)
+							node = node->right_child;
 					}
-					if (key < n->pair.first)
-						n->left_child = n;
+					if (key < node->pair_value.first)
+						node->left_child = new_node;
 					else
-						n->right_child = n;
+						node->right_child = new_node;
 				}
 			}
-			node* search_node(key_type key)
+			pointer search_node(key_type key)
 			{
-				node* current_node = _root;
+				pointer current_node = _root;
 				while (current_node->left_child || current_node->right_child)
 				{
-					if (key == current_node->pair.first)
+					if (key == current_node->pair_value.first)
 						return current_node;
-					else if (key < current_node->pair.first)
+					else if (key < current_node->pair_value.first)
 						current_node = current_node->left_child;
 					else
 						current_node = current_node->right_child;
@@ -103,18 +104,18 @@ namespace ft
 			}
 			void delete_node(key_type key)
 			{
-				node* n = search_node(key);
+				pointer n = search_node(key);
 				if (n)
 				{
 					_alloc.deallocate(n, 1);
 				}
 			}
-			void compute_node_height(node* n, size_type& height)
+			void compute_node_height(pointer node, size_type& height)
 			{
-				while (n)
+				if (node)
 				{
-					compute_node_height(n->left_child, height);
-					compute_node_height(n->right_child, height);
+					compute_node_height(node->left_child, height);
+					compute_node_height(node->right_child, height);
 					height++;
 				}
 			}
