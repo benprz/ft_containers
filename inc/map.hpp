@@ -29,7 +29,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer		const_pointer;
 
 		private:
-			map_tree<value_type, allocator_type>	_container;
+
+			ft::map_tree<key_type, mapped_type>	_container;
 
 		public:
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {};
@@ -68,7 +69,7 @@ namespace ft
 			// Modifiers |
 			//----------
 			//std::pair<iterator,bool> insert (const value_type& val);
-			iterator insert (iterator position, const value_type& val);
+			//iterator insert (iterator position, const value_type& val);
 			//template <class InputIterator>
 			//void insert (InputIterator first, InputIterator last);
 			//void erase (iterator position);
@@ -96,4 +97,5 @@ namespace ft
 			//pair<iterator,iterator> equal_range (const key_type& k);
 	};
 }
+
 #endif
