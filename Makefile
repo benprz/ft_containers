@@ -1,9 +1,9 @@
 #MAKEFLAGS += --silent
 
 NAME = ft_containers
-CC = c++
-CPPFLAGS = #-std=c++98#-Wextra -Wall -Werror
-CPPFLAGS += -fsanitize=address -g3
+CC = clang++
+CPPFLAGS =  #-fsanitize=address#-std=c++98#-Wextra -Wall -Werror
+CPPFLAGS += -g3
 INC_DIR = inc/
 INC =	map.hpp \
 		map_tree.hpp \
