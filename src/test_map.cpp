@@ -16,11 +16,11 @@ int main()
 {
 	ft::map_tree<int, int> tree;
 
-	tree.insert_node(5, 100);
-	tree.insert_node(4, 99);
+	tree.insert_node(1, 100);
+	tree.insert_node(2, 99);
 	tree.insert_node(3, 98);
-	// tree.insert_node(2, 97);
-	// tree.insert_node(7, 96);
+	tree.insert_node(5, 97);
+	tree.insert_node(7, 96);
 	// tree.insert_node(1, 95);
 	// tree.insert_node(10, 94);
 	// tree.insert_node(-1, 93);

@@ -119,36 +119,35 @@ namespace ft
 					//_alloc.deallocate(node, 1);
 				}
 			}
-			void rotate_left(pointer& node)
+			void rotate_right(pointer node)
 			{
-				// pointer n = node;
-				// pointer nlc = n->left_child;
-
-				// n->left_child = nlc->right_child;
-				// nlc->right_child = n;
-				// return nlc
-
-				// pointer newParent = node->right_child;
-				// node->right_child = newParent->left_child;
-				// newParent->left_child = node;
-
-				// node->level = std::max(height(node->right_child), height(node->left_child)) + 1;
-				// newParent->level = std::max(height(newParent->right_child), node->level) + 1;
-
-				// node = newParent; //set new root (we can't access newParent outside of this function!)
-				pointer tmp = node;
-				node = node->right_child; 
-				node->left_child = tmp; 
-				// return node;
+				pointer lc = node->left_child;
+				if (node->parent)
+					node->parent->left_child = lc;
+				lc->right_child = node;
+				lc->parent = node->parent;
+				node->parent = node->left_child;
+				node->left_child = NULL;
+				node->level++;
+				lc->level--;
+				lc->left_child->level--;
+				if (_root == node)
+					_root = lc;
 			}
-			pointer rotate_right(pointer node)
+			void rotate_left(pointer node)
 			{
-				pointer n = node;
-				pointer nrc = n->right_child;
-
-				n->right_child = nrc->left_child;
-				nrc->left_child = n;
-				return nrc;
+				pointer lc = node->right_child;
+				if (node->parent)
+					node->parent->right_child = lc;
+				lc->left_child = node;
+				lc->parent = node->parent;
+				node->parent = node->right_child;
+				node->right_child = NULL;
+				node->level++;
+				lc->level--;
+				lc->right_child->level--;
+				if (_root == node)
+					_root = lc;
 			}
 			pointer rotate_left_right(pointer node)
 			{
@@ -174,7 +173,7 @@ namespace ft
 				nrclc->right_child = nrc; 
 				return nrclc;
 			}
-			void keep_node_balance(pointer& node)
+			void keep_node_balance(pointer node)
 			{
 				print_tree();
 				while (node)
@@ -188,14 +187,14 @@ namespace ft
 
 						std::cout << "bf=" << bf << " lc_bf=" << lc_bf << " rc_bf=" << rc_bf << std::endl;
 						if (bf == 2 && lc_bf == 1)
-						
-							std::cout << "left r" << std::endl;
-							//rotate_left(node);
+						{
+							std::cout << "right r" << std::endl;
+							rotate_right(node);
 						}
 						else if (bf == -2 && rc_bf == -1)
 						{
-							std::cout << "right r" << std::endl;
-							//rotate_right(node);
+							std::cout << "left r" << std::endl;
+							rotate_left(node);
 						}
 					}
 					node = node->parent;
