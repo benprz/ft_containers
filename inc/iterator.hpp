@@ -36,6 +36,60 @@ namespace ft
 		typedef std::random_access_iterator_tag	iterator_category;
 	};
 
+	template<typename T>
+	class bidirectional_iterator
+	{
+		public:
+			typedef std::ptrdiff_t 					difference_type;
+			typedef T								value_type;
+			typedef T*								pointer;
+			typedef T&								reference;
+			typedef std::bidirectional_iterator_tag	iterator_category;
+
+		private:
+			pointer _ptr;
+
+		public:
+			bidirectional_iterator() {}
+			bidirectional_iterator(bidirectional_iterator const &c) {}
+			bidirectional_iterator& operator=(bidirectional_iterator const &c) {}
+			~bidirectional_iterator() {}
+
+			bool operator==(bidirectional_iterator const &c) {}
+			bool operator!=(bidirectional_iterator const &c) {}
+
+			reference operator*() {}
+			reference operator->() {}
+
+			reference operator=(reference value) {}
+
+			bidirectional_iterator& operator++() {}
+			bidirectional_iterator operator++()
+			{
+				bidirectional_iterator it = _ptr;
+				++_ptr;
+				return it;
+			}
+			bidirectional_iterator& operator--() {}
+			bidirectional_iterator operator--()
+			{
+				bidirectional_iterator it = _ptr;
+				--ptr;
+				return it;
+			}
+	};
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 	template <typename T>
 		class random_access_iterator// : public ft::iterator<ft::random_access_iterator_tag, T>
