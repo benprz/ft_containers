@@ -84,7 +84,10 @@
 	"numeric": "cpp",
 	"random": "cpp",
 	"thread": "cpp",
-	"variant": "cpp"
+	"variant": "cpp",
+	"compare": "cpp",
+	"__bits": "cpp",
+	"concepts": "cpp"
 },
   "makefile.launchConfigurations": [
     {

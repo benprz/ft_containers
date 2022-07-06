@@ -42,8 +42,8 @@ namespace ft
 		public:
 			typedef std::ptrdiff_t 					difference_type;
 			typedef T								value_type;
-			typedef T*								pointer;
-			typedef T&								reference;
+			typedef _node_tree<value_type>*			pointer;
+			typedef _node_tree<value_type>&			reference;
 			typedef std::bidirectional_iterator_tag	iterator_category;
 
 		private:
@@ -51,30 +51,38 @@ namespace ft
 
 		public:
 			bidirectional_iterator() {}
-			bidirectional_iterator(bidirectional_iterator const &c) {}
-			bidirectional_iterator& operator=(bidirectional_iterator const &c) {}
+			bidirectional_iterator(pointer ptr) : _ptr(ptr) {}
+			bidirectional_iterator(bidirectional_iterator const &c) : _ptr(c._ptr) {}
+			bidirectional_iterator& operator=(bidirectional_iterator const &c) { _ptr = c._ptr; }
 			~bidirectional_iterator() {}
 
-			bool operator==(bidirectional_iterator const &c) {}
-			bool operator!=(bidirectional_iterator const &c) {}
+			bool operator==(bidirectional_iterator const &c) const { return _ptr == c._ptr; }
+			bool operator!=(bidirectional_iterator const &c) const { return _ptr != c._ptr; }
 
-			reference operator*() {}
-			reference operator->() {}
+			reference operator*() const { return _ptr->data; }
+			reference operator->() const { return _ptr->data; }
 
 			reference operator=(reference value) {}
 
-			bidirectional_iterator& operator++() {}
-			bidirectional_iterator operator++()
+			bidirectional_iterator& operator++()
+			{
+				_ptr = _ptr
+				return *this;
+			}
+			bidirectional_iterator operator++(int)
 			{
 				bidirectional_iterator it = _ptr;
-				++_ptr;
+				operator++();
 				return it;
 			}
-			bidirectional_iterator& operator--() {}
-			bidirectional_iterator operator--()
+			bidirectional_iterator& operator--()
+			{
+				return *this;
+			}
+			bidirectional_iterator operator--(int)
 			{
 				bidirectional_iterator it = _ptr;
-				--ptr;
+				operator--();
 				return it;
 			}
 	};

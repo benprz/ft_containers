@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "map_tree.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -28,10 +29,9 @@ namespace ft
 			typedef typename allocator_type::pointer				pointer;
 			typedef typename allocator_type::const_pointer			const_pointer;
 			typedef ft::bidirectional_iterator<value_type>			iterator;
-			typedef ft::bidirectional_iterator<const value_type>	iterator;
+			typedef ft::bidirectional_iterator<const value_type>	const_iterator;
 
 		private:
-
 			ft::map_tree<key_type, mapped_type>	_container;
 
 		public:
@@ -41,15 +41,15 @@ namespace ft
 			map (const map& x);
 			~map() {};
 			reference operator= (const map& x);
-			allocator_type get_allocator() const { return _container._alloc; };
+			allocator_type get_allocator() const { return _container._node_alloc; };
 
 			//----------
 			// Iterators |
 			//----------
-			// iterator begin();
-			// const_iterator begin() const;
-			// iterator end();
-			// const_iterator end() const;
+			iterator begin() { return iterator(_container.getBegin()); }
+			const_iterator begin() const;
+			iterator end();
+			const_iterator end() const;
 			// reverse_iterator rbegin();
 			// const_reverse_iterator rbegin() const;
 			// reverse_iterator rend();
@@ -70,6 +70,10 @@ namespace ft
 			//----------
 			// Modifiers |
 			//----------
+			void insert(key_type key, mapped_type data)
+			{
+				_container.insert_node(key, data);
+			}
 			//std::pair<iterator,bool> insert (const value_type& val);
 			//iterator insert (iterator position, const value_type& val);
 			//template <class InputIterator>
