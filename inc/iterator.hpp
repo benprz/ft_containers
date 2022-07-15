@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstddef>
 
+
 namespace ft
 {
 	template<typename Iter>
@@ -36,22 +37,28 @@ namespace ft
 		typedef std::random_access_iterator_tag	iterator_category;
 	};
 
+	template <typename T>
+	class _node_tree;
+
 	template<typename T>
 	class bidirectional_iterator
 	{
 		public:
-			typedef std::ptrdiff_t 					difference_type;
 			typedef T								value_type;
 			typedef _node_tree<value_type>*			pointer;
-			typedef _node_tree<value_type>&			reference;
+			typedef const _node_tree<value_type>*	const_pointer;
+			typedef _node_tree<value_type>& 		reference;
+			typedef value_type*						value_pointer;
+			typedef value_type&						value_reference;
 			typedef std::bidirectional_iterator_tag	iterator_category;
+			typedef std::ptrdiff_t					difference_type;
 
 		private:
 			pointer _ptr;
 
 		public:
 			bidirectional_iterator() {}
-			bidirectional_iterator(pointer ptr) : _ptr(ptr) {}
+			bidirectional_iterator(pointer const ptr) : _ptr(ptr) {}
 			bidirectional_iterator(bidirectional_iterator const &c) : _ptr(c._ptr) {}
 			bidirectional_iterator& operator=(bidirectional_iterator const &c) { _ptr = c._ptr; }
 			~bidirectional_iterator() {}
@@ -59,14 +66,12 @@ namespace ft
 			bool operator==(bidirectional_iterator const &c) const { return _ptr == c._ptr; }
 			bool operator!=(bidirectional_iterator const &c) const { return _ptr != c._ptr; }
 
-			reference operator*() const { return _ptr->data; }
-			reference operator->() const { return _ptr->data; }
-
-			reference operator=(reference value) {}
+			value_reference operator*() const { return _ptr->data; }
+			value_pointer operator->() const { return _ptr->data; }
 
 			bidirectional_iterator& operator++()
 			{
-				_ptr = _ptr
+				_ptr = _ptr->get_next_node();
 				return *this;
 			}
 			bidirectional_iterator operator++(int)
@@ -77,6 +82,7 @@ namespace ft
 			}
 			bidirectional_iterator& operator--()
 			{
+				_ptr = _ptr->get_previous_node();
 				return *this;
 			}
 			bidirectional_iterator operator--(int)
@@ -85,8 +91,63 @@ namespace ft
 				operator--();
 				return it;
 			}
+
+			pointer ptr() const { return _ptr; }
 	};
 
+	template<typename T>
+	class bidirectional_const_iterator
+	{
+		public:
+			typedef T								value_type;
+			typedef _node_tree<value_type>*			pointer;
+			typedef const _node_tree<value_type>*	const_pointer;
+			typedef _node_tree<value_type>& 		reference;
+			typedef const value_type*				value_pointer;
+			typedef const value_type&				value_reference;
+			typedef std::bidirectional_iterator_tag	iterator_category;
+			typedef std::ptrdiff_t 					difference_type;
+
+		private:
+			pointer _ptr;
+
+		public:
+			bidirectional_const_iterator() {}
+			bidirectional_const_iterator(pointer ptr) : _ptr(ptr) {}
+			bidirectional_const_iterator(bidirectional_iterator<T> const &c) : _ptr(c.ptr()) {}
+			bidirectional_const_iterator(bidirectional_const_iterator const &c) : _ptr(c._ptr) {}
+			bidirectional_const_iterator& operator=(bidirectional_const_iterator const &c) { _ptr = c._ptr; }
+			~bidirectional_const_iterator() {}
+
+			bool operator==(bidirectional_const_iterator const &c) const { return _ptr == c._ptr; }
+			bool operator!=(bidirectional_const_iterator const &c) const { return _ptr != c._ptr; }
+
+			value_reference operator*() const { return _ptr->data; }
+			value_pointer operator->() const { return _ptr->data; }
+
+			bidirectional_const_iterator& operator++()
+			{
+				_ptr = _ptr->get_next_node();
+				return *this;
+			}
+			bidirectional_const_iterator operator++(int)
+			{
+				bidirectional_const_iterator it = _ptr;
+				operator++();
+				return it;
+			}
+			bidirectional_const_iterator& operator--()
+			{
+				_ptr = _ptr->get_previous_node();
+				return *this;
+			}
+			bidirectional_const_iterator operator--(int)
+			{
+				bidirectional_const_iterator it = _ptr;
+				operator--();
+				return it;
+			}
+	};
 
 
 
@@ -750,5 +811,6 @@ namespace ft
 	}
 }
 
+#include "map_tree.hpp"
 
 #endif
