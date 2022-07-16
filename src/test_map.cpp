@@ -10,6 +10,7 @@
 #include <string_view>
 #include <typeinfo>
 #include <type_traits>
+#include <vector>
 
 class B
 {
@@ -32,7 +33,25 @@ class A
 		}
 };
 
-void a() {}
+int _ratio = 2;
+#define _map ft::map
+
+void a()
+{
+	std::cout << "TEST->" << std::endl;
+	std::vector<int> v;
+	_map<int, int> mp;
+
+    for (int i = 0, j = 10; i < 30 * _ratio; ++i, ++j) {
+        mp.insert(ft::make_pair(i, j));
+    }
+    _map<int, int> mp2(mp.begin(), mp.end());
+    _map<int, int>::iterator it = mp2.begin();
+    for (int i = 0; i < 30 * _ratio; ++i, it++) {
+        v.push_back(it->first);
+        v.push_back(it->second);
+    }
+}
 
 int main()
 {
@@ -97,6 +116,7 @@ int main()
 	std::cout << std::distance(map2.begin(), map2.end());
 	ft::map<int, int> map3(map2);
 	ft::map<int, int> map4(map3.begin(), map3.end());
+	a();
 	/*
 	printf("%p %p\n", &*map2.begin(), &*map2.end());
 	map2.insert(ft::pair<int, int>(1, 42));

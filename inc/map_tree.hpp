@@ -6,15 +6,11 @@
 #include <iostream>
 #include <iomanip>
 
+#include "iterator.hpp"
 #include "pair.hpp"
 
 namespace ft
 {
-	template<typename T>
-	class bidirectional_iterator;
-	template<typename T>
-	class bidirectional_const_iterator;
-
 	template <typename T>
 	class _node_tree
 	{
@@ -116,7 +112,7 @@ namespace ft
 
 		public:
 			map_tree() : _root(NULL), _size(0) {}
-			map_tree(const key_compare& comp, const allocator_type& alloc) : _comp(comp), _alloc(alloc) {}
+			map_tree(const key_compare& comp, const allocator_type& alloc) : _comp(comp), _alloc(alloc), _root(NULL), _size(0) {}
 			~map_tree() { deallocate_tree(_root); }
 
 			size_type getSize() const { return _size; }
@@ -226,14 +222,14 @@ namespace ft
 			}
 			node_pointer lower_bound(const key_type& k)
 			{
-				node_pointer node = &*begin();
+				node_pointer node = begin();
 				while (node != &_end_stack_node_object && _comp(node->data.first, k))
 					node = node->get_next_node();
 				return node;
 			}
 			node_pointer upper_bound(const key_type& k)
 			{
-				node_pointer node = begin()->ptr();
+				node_pointer node = begin();
 				while (node != &_end_stack_node_object && !_comp(node->data.first, k))
 					node = node->get_next_node();
 				return node;
@@ -344,7 +340,7 @@ namespace ft
 			}
 			void keep_node_balance(node_pointer node)
 			{
-				print_tree();
+				//print_tree();
 				while (node)
 				{
 					int bf = compute_balance_factor(node);
@@ -378,7 +374,7 @@ namespace ft
 					}
 					node = node->parent;
 				}
-				print_tree();
+				//print_tree();
 			}
 			void compute_node_height(node_pointer node, size_type &height)
 			{
@@ -412,6 +408,7 @@ namespace ft
 				}
 				return 0;
 			}
+			/*
 			bool is_node_left_in_tree(node_pointer node)
 			{
 				return node->data.first < _root->data.first;
@@ -429,12 +426,6 @@ namespace ft
 						}
 						else
 						{
-							/*
-							if (node->parent->left == node)
-								//std::cout << std::setw(left_width * 2);
-							else if (node->parent->right == node)
-								//std::cout << std::setw(4);
-							*/
 							//std::cout << "(" << node->parent->data.first;
 							if (node->parent->left == node)
 							{
@@ -472,9 +463,8 @@ namespace ft
 				}
 				//std::cout << "-------------------\n";
 			}
+			*/
 	};
 }
-
-#include "iterator.hpp"
 
 #endif

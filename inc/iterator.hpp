@@ -36,9 +36,6 @@ namespace ft
 		typedef std::random_access_iterator_tag	iterator_category;
 	};
 
-	template <typename T>
-	class _node_tree;
-
 	template<typename T>
 	class bidirectional_iterator
 	{
@@ -57,7 +54,11 @@ namespace ft
 			bidirectional_iterator() {}
 			bidirectional_iterator(T* const ptr) : _ptr(ptr) {}
 			bidirectional_iterator(bidirectional_iterator const &c) : _ptr(c._ptr) {}
-			bidirectional_iterator& operator=(bidirectional_iterator const &c) { _ptr = c._ptr; }
+			bidirectional_iterator& operator=(bidirectional_iterator const &c)
+			{
+				_ptr = c._ptr;
+				return *this;	
+			}
 			~bidirectional_iterator() {}
 
 			bool operator==(bidirectional_iterator const &c) const { return _ptr == c._ptr; }
@@ -111,7 +112,11 @@ namespace ft
 			bidirectional_const_iterator(T* ptr) : _ptr(ptr) {}
 			bidirectional_const_iterator(bidirectional_iterator<T> const &c) : _ptr(c.ptr()) {}
 			bidirectional_const_iterator(bidirectional_const_iterator const &c) : _ptr(c._ptr) {}
-			bidirectional_const_iterator& operator=(bidirectional_const_iterator const &c) { _ptr = c._ptr; }
+			bidirectional_const_iterator& operator=(bidirectional_const_iterator const &c)
+			{
+				_ptr = c._ptr;
+				return *this;
+			}
 			~bidirectional_const_iterator() {}
 
 			bool operator==(bidirectional_const_iterator const &c) const { return _ptr == c._ptr; }
@@ -852,7 +857,5 @@ namespace ft
 		return std::distance(lhs, rhs);
 	}
 }
-
-#include "map_tree.hpp"
 
 #endif
