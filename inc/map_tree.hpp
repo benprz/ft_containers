@@ -24,14 +24,9 @@ namespace ft
 			node_pointer parent;
 			node_pointer left;
 			node_pointer right;
-			size_type	 level;
 
-			_node_tree() : data(0,0), parent(NULL), left(NULL), right(NULL), level(-1){}
-			_node_tree(T data, node_pointer end, node_pointer parent = NULL) : data(data), end(end), parent(parent), level(0), left(NULL), right(NULL)
-			{
-				if (parent)
-					level = parent->level + 1;
-			}
+			_node_tree() : data(0,0), parent(NULL), left(NULL), right(NULL) {}
+			_node_tree(T data, node_pointer end, node_pointer parent = NULL) : data(data), end(end), parent(parent), left(NULL), right(NULL) {}
 			node_pointer get_previous_node() const
 			{
 				node_pointer node = (node_pointer)this;
@@ -283,9 +278,6 @@ namespace ft
 				if (node->parent)
 					node->parent->right = child;
 				node->parent = child;
-				child->level--;
-				node->level++;
-				child->right->level--;
 				if (_root == node)
 					_root = child;
 			}
@@ -300,9 +292,6 @@ namespace ft
 				if (node->parent)
 					node->parent->left = child;
 				node->parent = child;
-				child->level--;
-				node->level++;
-				child->left->level--;
 				if (_root == node)
 					_root = child;
 			}
@@ -310,13 +299,11 @@ namespace ft
 			{
 				node_pointer child = node->left;
 				node_pointer parent = child->right;
-				parent->level = node->level;
 				parent->parent = node->parent;
 				node->parent = parent;
 				child->parent = parent;
 				child->right = NULL;
 				node->left = NULL;
-				node->level++;
 				parent->left = child;
 				parent->right = node;
 				if (_root == node)
@@ -326,13 +313,11 @@ namespace ft
 			{
 				node_pointer child = node->right;
 				node_pointer parent = child->left;
-				parent->level = node->level;
 				parent->parent = node->parent;
 				node->parent = parent;
 				child->parent = parent;
 				child->left = NULL;
 				node->right = NULL;
-				node->level++;
 				parent->right = child;
 				parent->left = node;
 				if (_root == node)
@@ -419,30 +404,6 @@ namespace ft
 				}
 				return 0;
 			}
-			/*
-			void compute_node_height(node_pointer node, size_type &height)
-			{
-				if (node)
-				{
-					if (node->level > height)
-						height = node->level;
-					compute_node_height(node->left, height);
-					compute_node_height(node->right, height);
-				}
-			}
-			int compute_balance_factor(node_pointer node)
-			{
-				if (node)
-				{
-					size_type left_child_height = node->level;
-					size_type right_child_height = node->level;
-					compute_node_height(node->left, left_child_height);
-					compute_node_height(node->right, right_child_height);
-					return (left_child_height - right_child_height);
-				}
-				return 0;
-			}
-			*/
 			int compute_tree_height()
 			{
 				int height = 0;
