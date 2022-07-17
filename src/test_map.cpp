@@ -102,10 +102,13 @@ int main()
 	map2.insert(ft::pair<int, int>(2, 42));
 	map2.insert(ft::pair<int, int>(3, 42));
 	map2.insert(ft::pair<int, int>(4, 42));
+	/*
 	map2.insert(ft::pair<int, int>(5, 42));
 	map2.insert(ft::pair<int, int>(7, 42));
 	map2.insert(ft::pair<int, int>(13, 42));
 	map2.insert(ft::pair<int, int>(20, 42));
+	*/
+	/*
 	ft::map<int, int>::iterator begin = map2.begin();
 	begin++;
 	begin++;
@@ -117,6 +120,7 @@ int main()
 	ft::map<int, int> map3(map2);
 	ft::map<int, int> map4(map3.begin(), map3.end());
 	a();
+	*/
 	/*
 	printf("%p %p\n", &*map2.begin(), &*map2.end());
 	map2.insert(ft::pair<int, int>(1, 42));
