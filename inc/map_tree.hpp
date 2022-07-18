@@ -46,27 +46,27 @@ namespace ft
 				if (right)
 				{
 					node = right;
-					////printf("%d/%d self=%p end=%p parent=%p left=%p right=%p\n", data.first, data.second, (node_pointer)this, end, parent, left, right);
-					////printf("node->right: %d/%d self=%p end=%p parent=%p left=%p right=%p\n", node->data.first, node->data.second, node, node->end, node->parent, node->left, node->right);
+					//printf("%d/%d self=%p end=%p parent=%p left=%p right=%p\n", data.first, data.second, (node_pointer)this, end, parent, left, right);
+					//printf("node->right: %d/%d self=%p end=%p parent=%p left=%p right=%p\n", node->data.first, node->data.second, node, node->end, node->parent, node->left, node->right);
 					while (node->left)
 						node = node->left;
 				}
 				else if (parent && parent->left == node)
 				{
 					node = parent;
-					////printf("%d/%d self=%p end=%p parent=%p left=%p right=%p\n", data.first, data.second, (node_pointer)this, end, parent, left, right);
-					////printf("node->parent: %d/%d self=%p end=%p parent=%p left=%p right=%p\n", node->data.first, node->data.second, node, node->end, node->parent, node->left, node->right);
+					//printf("%d/%d self=%p end=%p parent=%p left=%p right=%p\n", data.first, data.second, (node_pointer)this, end, parent, left, right);
+					//printf("node->parent: %d/%d self=%p end=%p parent=%p left=%p right=%p\n", node->data.first, node->data.second, node, node->end, node->parent, node->left, node->right);
 				}
 				else if (parent && parent->right == node && parent->parent && parent->parent->left == parent)
 				{
 					node = parent->parent;
-					////printf("%d/%d self=%p end=%p parent=%p left=%p right=%p\n", data.first, data.second, (node_pointer)this, end, parent, left, right);
-					////printf("node->parent->parent: %d/%d self=%p end=%p parent=%p left=%p right=%p\n", node->data.first, node->data.second, node, node->end, node->parent, node->left, node->right);
+					//printf("%d/%d self=%p end=%p parent=%p left=%p right=%p\n", data.first, data.second, (node_pointer)this, end, parent, left, right);
+					//printf("node->parent->parent: %d/%d self=%p end=%p parent=%p left=%p right=%p\n", node->data.first, node->data.second, node, node->end, node->parent, node->left, node->right);
 				}
 				else
 				{
 					node = end;
-					////printf("%d/%d->+END+\n", data.first, data.second);
+					//printf("%d/%d->+END+\n", data.first, data.second);
 				}
 				return node;
 			}
@@ -110,7 +110,7 @@ namespace ft
 			map_tree(const key_compare& comp, const allocator_type& alloc) : _comp(comp), _alloc(alloc), _root(NULL), _size(0) {}
 			~map_tree()
 			{
-				print_tree();
+				//print_tree();
 				deallocate_tree(_root);
 			}
 
@@ -279,7 +279,7 @@ namespace ft
 						successor->parent = node->parent;
 						// successor->right = node->right;
 						// successor->left = node->left;
-						////printf("remove: %d\n", node->data.first);
+						//printf("remove: %d\n", node->data.first);
 						_node_alloc.deallocate(node, 1);
 					}
 					if (_root == node)
@@ -290,7 +290,7 @@ namespace ft
 				}
 				return 0;
 			}
-			void rotate_left(node_pointer node) // 1 2 3
+			void rotate_left(node_pointer node)
 			{
 				node_pointer child = node->right;
 
@@ -312,7 +312,7 @@ namespace ft
 				child->left = node;
 				node->parent = child;
 			}
-			void rotate_right(node_pointer node) // 3 2 1
+			void rotate_right(node_pointer node)
 			{
 				node_pointer child = node->left;
 
@@ -334,33 +334,6 @@ namespace ft
 				child->right = node;
 				node->parent = child;
 			}
-			void rotate_left_right(node_pointer node) // 3 1 2
-			{
-				node_pointer child = node->left;
-				node_pointer parent = child->right;
-				parent->parent = node->parent;
-				node->parent = parent;
-				child->parent = parent;
-				child->right = NULL;
-				node->left = NULL;
-				parent->left = child;
-				parent->right = node;
-				if (_root == node)
-					_root = parent;
-			}
-			/*
-			1
-					3
-				2
-
-	->						->
-			1							2
-				2					1		3
-					3	
-			*/
-			void rotate_right_left(node_pointer node) // 1 3 2
-			{
-			}
 			void keep_node_balance(node_pointer node)
 			{
 				//print_tree();
@@ -376,25 +349,27 @@ namespace ft
 						int rc_bf = compute_balance_factor(node->right);
 
 						////std::cout << "bf=" << bf << " lc_bf=" << lc_bf << " rc_bf=" << rc_bf << std::endl;
-						if (bf == 2 && lc_bf == 1)
+						if (bf == 2 && lc_bf == 1) // 3 2 1
 						{
-							std::cout << "right r" << std::endl;
+							//std::cout << "right r" << std::endl;
 							rotate_right(node);
 						}
-						else if (bf == -2 && rc_bf == -1)
+						else if (bf == -2 && rc_bf == -1) // 1 2 3
 						{
-							std::cout << "left r" << std::endl;
+							//std::cout << "left r" << std::endl;
 							rotate_left(node);
 						}
 						else if (bf == 2 && lc_bf == -1)
 						{
-							std::cout << "left right rotation" << std::endl;
-							rotate_left_right(node);
+							//std::cout << "left right rotation" << std::endl;
+							rotate_left(node->left);
+							rotate_right(node);
 						}
 						else if (bf == -2 && rc_bf == 1)
 						{
-							std::cout << "right left rotation" << std::endl;
-							rotate_right_left(node);
+							//std::cout << "right left rotation" << std::endl;
+							rotate_right(node->right);
+							rotate_left(node);
 						}
 					}
 					node = node->parent;
@@ -498,9 +473,7 @@ namespace ft
 					node = node->left;
 					left_width++;
 				}
-						//std::cout << "kdsjhichuksduic\n";
 				int tree_height = compute_tree_height();
-						//std::cout << "#kdsjhichuksduic\n";
 				for (int i = 0; i <= tree_height; i++)
 				{
 					print_nodes_line(_root, i, left_width--);

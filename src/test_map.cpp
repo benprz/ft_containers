@@ -96,7 +96,35 @@ int main()
 	// std::map<int, int>::const_iterator it = map.begin();
 	// printf("map2->%p\n", &*(map.insert(ft::pair<int, int>(1, 42)).first));
 
-	ft::map<int, int> map2;
+	std::vector<int> v;
+	unsigned short y = 10000;
+	std::srand(std::time(NULL));
+	for (unsigned short i = 0; i < y; i++)
+	{
+		v.push_back(rand());
+	}
+	ft::map<int, int> ft_map;
+	std::map<int, int> std_map;
+	for (unsigned short i = 0; i < v.size(); i++)
+	{
+		ft_map.insert(ft::pair<int, int>(v[i], 42));
+		std_map.insert(std::pair<int, int>(v[i], 42));
+	}
+	ft::map<int, int>::iterator ft_it = ft_map.begin();
+	std::map<int, int>::iterator std_it = std_map.begin();
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (ft_it->first != std_it->first)
+		{
+			std::cout << "ERORRRRRRNDSUIUCSDUHFUDHS\n";
+			exit(1);
+		}
+		else
+		{
+			std::cout << "TOUT JUSTE!!!!!!!!!!" << std::endl;
+		}
+	}
+	/*
 	// 1, 2, 3, 4, 5, 7, 13, 20,37,40,99,98,45,44,28,29,87,67,19,95,18,22,38,77,42 9
 	map2.insert(ft::pair<int, int>(1, 42));
 	map2.insert(ft::pair<int, int>(2, 42));
@@ -109,29 +137,12 @@ int main()
 	map2.insert(ft::pair<int, int>(37, 42));
 	map2.insert(ft::pair<int, int>(40, 42));
 	map2.insert(ft::pair<int, int>(99, 42));
-	map2.insert(ft::pair<int, int>(98, 42));
-	map2.insert(ft::pair<int, int>(45, 42));
-	map2.insert(ft::pair<int, int>(44, 42));
-	/*
-	map2.insert(ft::pair<int, int>(28, 42));
-	map2.insert(ft::pair<int, int>(29, 42));
-	map2.insert(ft::pair<int, int>(87, 42));
-	map2.insert(ft::pair<int, int>(67, 42));
-	map2.insert(ft::pair<int, int>(19, 42));
-	map2.insert(ft::pair<int, int>(95, 42));
-	map2.insert(ft::pair<int, int>(18, 42));
-	map2.insert(ft::pair<int, int>(22, 42));
-	map2.insert(ft::pair<int, int>(38, 42));
-	map2.insert(ft::pair<int, int>(77, 42));
-	map2.insert(ft::pair<int, int>(42, 42));
 	ft::map<int, int>::iterator begin = map2.begin();
 	begin++;
 	begin++;
 	begin++;
 	map2.insert(begin, ft::pair<int, int>(9, 42));
 	map2.erase(7);
-	*/
-	/*
 	map2.erase(4);
 	std::cout << std::distance(map2.begin(), map2.end());
 	ft::map<int, int> map3(map2);
