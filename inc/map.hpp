@@ -14,13 +14,13 @@ namespace ft
 		class Key,
 		class T,
 		class Compare = std::less<Key>,
-		class Allocator = std::allocator<pair<const Key, T> >
+		class Allocator = std::allocator<std::pair<const Key, T> >
 	> class map
 	{
 		public:
 			typedef Key													key_type;
 			typedef T													mapped_type;
-			typedef pair<const Key, T>								value_type;
+			typedef pair<const Key, T>									value_type;
 			typedef std::size_t											size_type;
 			typedef std::ptrdiff_t										difference_type;
 			typedef Compare												key_compare;
@@ -29,21 +29,24 @@ namespace ft
 			typedef typename allocator_type::const_reference			const_reference;
 			typedef typename allocator_type::pointer					pointer;
 			typedef typename allocator_type::const_pointer				const_pointer;
-			typedef typename ft::map_tree<key_type, mapped_type>::iterator		iterator;
-			typedef typename ft::map_tree<key_type, mapped_type>::const_iterator	const_iterator;
-			typedef ft::reverse_bidirectional_iterator<iterator> reverse_iterator;
-			typedef ft::reverse_bidirectional_iterator<const_iterator> const_reverse_iterator;
+			typedef typename ft::map_tree<key_type, mapped_type, key_compare, allocator_type>	tree;
+			typedef typename tree::iterator								iterator;
+			typedef typename tree::const_iterator						const_iterator;
+			typedef ft::reverse_bidirectional_iterator<iterator>		reverse_iterator;
+			typedef ft::reverse_bidirectional_iterator<const_iterator>	const_reverse_iterator;
 
-		private:
 			class value_compare : std::binary_function<value_type, value_type, bool>
 			{
+				friend class map;
 				protected:
-					Compare comp;
-					value_compare(Compare c) : comp(c) {}
+					key_compare comp;
+					value_compare(key_compare c) : comp(c) {}
 				public:
 					bool operator()( const value_type& lhs, const value_type& rhs ) const { return comp(lhs.first, rhs.first); }
 			};
-			ft::map_tree<key_type, mapped_type>	_container;
+
+		private:
+			tree _container;
 
 		public:
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _container(comp, alloc) {}
@@ -78,12 +81,18 @@ namespace ft
 			//---------
 			bool empty() const { return begin() == end(); }
 			size_type size() const { return _container.getSize(); }
-			size_type max_size() const { return _container._node_alloc.max_size(); }
+			size_type max_size() const { return _container.max_size(); }
 
 			//---------------
 			// Element access |
 			//---------------
-			mapped_type& operator[] (const key_type& k) { return _container.get_node(k); };
+			mapped_type& operator[] (const key_type& k)
+			{
+				iterator it = _container.search_node(k);
+				if (it == end())
+					it = _container.insert_node(k, mapped_type());
+				return it->second;
+			};
 
 			//----------
 			// Modifiers |
@@ -101,23 +110,17 @@ namespace ft
 			void insert (InputIterator first, InputIterator last)
 			{
 				while (first != last)
-				{
-					_container.insert_node(*first);
-					first++;
-				}
+					_container.insert_node(*(first++));
 			}
 			void erase (iterator position) { _container.erase_node(*position); };
 			size_type erase (const key_type& k) { return _container.erase_node(k); }
 			void erase (iterator first, iterator last)
 			{
 				while (first != last)
-				{
-					_container.erase_node(*first);
-					last++;
-				}
+					_container.erase_node(*(first++));
 			};
 			void swap (map& x) { std::swap(_container, x._container); }
-			void clear() { erase(begin(), end()); }
+			void clear() { _container.clear(); }
 
 			//-------------
 			// Observations |
@@ -130,7 +133,7 @@ namespace ft
 			//-----------
 			iterator find (const key_type& k) { return iterator(_container.search_node(k)); }
 			const_iterator find (const key_type& k) const { return const_iterator(_container.search_node(k)); }
-			size_type count (const key_type& k) const { return iterator(_container.search_node(k)) != end(); }
+			size_type count (const key_type& k) const { return _container.count(k); }
 			iterator lower_bound (const key_type& k) { return iterator(_container.lower_bound(k)); }
 			const_iterator lower_bound (const key_type& k) const { return const_iterator(_container.lower_bound(k)); }
 			iterator upper_bound (const key_type& k) { return iterator(_container.upper_bound(k)); }

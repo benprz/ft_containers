@@ -7,10 +7,11 @@ CPPFLAGS += -g3
 INC_DIR = inc/
 INC =	map.hpp \
 		map_tree.hpp \
-		vector.hpp
+		vector.hpp \
+		iterator.hpp
 
 SRC_DIR = src/
-SRC = test_map.cpp
+SRC = test_map2.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)

@@ -44,6 +44,7 @@ namespace ft
 			typedef value_type*						pointer;
 			typedef const value_type*				const_pointer;
 			typedef value_type&				 		reference;
+			typedef const value_type&				const_reference;
 			typedef std::bidirectional_iterator_tag	iterator_category;
 			typedef std::ptrdiff_t					difference_type;
 
@@ -64,8 +65,10 @@ namespace ft
 			bool operator==(bidirectional_iterator const &c) const { return _ptr == c._ptr; }
 			bool operator!=(bidirectional_iterator const &c) const { return _ptr != c._ptr; }
 
-			reference operator*() const { return _ptr->data; }
-			pointer operator->() const { return &_ptr->data; }
+			reference operator*() { return _ptr->data; }
+			pointer operator->() { return &_ptr->data; }
+			const_reference operator*() const { return _ptr->data; }
+			const_pointer operator->() const { return &_ptr->data; }
 
 			bidirectional_iterator& operator++()
 			{
@@ -101,6 +104,7 @@ namespace ft
 			typedef value_type*						pointer;
 			typedef const value_type*				const_pointer;
 			typedef value_type&				 		reference;
+			typedef const value_type&				const_reference;
 			typedef std::bidirectional_iterator_tag	iterator_category;
 			typedef std::ptrdiff_t					difference_type;
 
@@ -122,8 +126,8 @@ namespace ft
 			bool operator==(bidirectional_const_iterator const &c) const { return _ptr == c._ptr; }
 			bool operator!=(bidirectional_const_iterator const &c) const { return _ptr != c._ptr; }
 
-			reference operator*() const { return _ptr->data; }
-			pointer operator->() const { return &_ptr->data; }
+			const_reference operator*() const { return _ptr->data; }
+			const_pointer operator->() const { return &_ptr->data; }
 
 			bidirectional_const_iterator& operator++()
 			{
