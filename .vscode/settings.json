@@ -87,7 +87,8 @@
 	"variant": "cpp",
 	"compare": "cpp",
 	"__bits": "cpp",
-	"concepts": "cpp"
+	"concepts": "cpp",
+	"version": "cpp"
 },
   "makefile.launchConfigurations": [
     {

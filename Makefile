@@ -8,7 +8,10 @@ INC_DIR = inc/
 INC =	map.hpp \
 		map_tree.hpp \
 		vector.hpp \
-		iterator.hpp
+		iterator.hpp \
+		tree_iterator.hpp \
+		reverse_iterator.hpp \
+		utils.hpp
 
 SRC_DIR = src/
 SRC = test_map2.cpp

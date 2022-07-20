@@ -6,21 +6,22 @@
 #include <iostream>
 #include <iomanip>
 
-#include "iterator.hpp"
+#include "tree_iterator.hpp"
 #include "pair.hpp"
 
 namespace ft
 {
-	template <typename Tree, typename T>
+	template <typename Tree, typename T, typename Compare>
 	class _node_tree
 	{
 		public:
-			typedef _node_tree<Tree, T>* node_pointer;
+			typedef _node_tree<Tree, T, Compare>* node_pointer;
 			typedef T value_type;
 			typedef std::size_t	size_type;
 
 			Tree *tree;
 			T data;
+			Compare comp;
 			node_pointer parent;
 			node_pointer left;
 			node_pointer right;
@@ -41,7 +42,7 @@ namespace ft
 				{
 					while (node)
 					{
-						if (node->parent && node->parent->data.first < data.first)
+						if (node->parent && comp(node->parent->data.first, data.first))
 							return node->parent;
 						node = node->parent;
 					}
@@ -60,7 +61,7 @@ namespace ft
 				{
 					while (node)
 					{
-						if (node->parent && node->parent->data.first > data.first)
+						if (node->parent && comp(data.first, node->parent->data.first))
 							return node->parent;
 						node = node->parent;
 					}
@@ -84,15 +85,15 @@ namespace ft
 			typedef std::ptrdiff_t difference_type;
 			typedef Compare key_compare;
 			typedef Allocator allocator_type;
-			typedef typename Allocator::template rebind<_node_tree<map_tree, value_type> >::other node_allocator_type;
+			typedef typename Allocator::template rebind<_node_tree<map_tree, value_type, key_compare> >::other node_allocator_type;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef _node_tree<map_tree, value_type> node;
-			typedef _node_tree<map_tree, value_type>* node_pointer;
-			typedef typename ft::bidirectional_iterator<node> iterator;
-			typedef typename ft::bidirectional_const_iterator<node> const_iterator;
+			typedef _node_tree<map_tree, value_type, key_compare> node;
+			typedef _node_tree<map_tree, value_type, key_compare>* node_pointer;
+			typedef typename ft::tree_iterator<node> iterator;
+			typedef typename ft::const_tree_iterator<node> const_iterator;
 
 		private:
 			key_compare	_comp;
@@ -114,12 +115,30 @@ namespace ft
 			{
 				if (!_root)
 					return (node_pointer)&_end_stack_node_object;
-
 				return leftmost_node();
 			}
 			node_pointer end() const { return (node_pointer)&_end_stack_node_object; }
 			size_type max_size() const { return _node_alloc.max_size(); }
+			void swap(map_tree &tree)
+			{
+				std::swap(_comp, tree._comp);
+				std::swap(_alloc, tree._alloc);
+				std::swap(_node_alloc, tree._node_alloc);
+				swap_tree(&tree, _root);
+				tree.swap_tree(this, tree._root);
+				std::swap(_root, tree._root);
+				std::swap(_size, tree._size);
+			}
 
+			void swap_tree(map_tree *tree, node_pointer node)
+			{
+				if (node)
+				{
+					swap_tree(tree, node->left);
+					swap_tree(tree, node->right);
+					node->tree = tree;
+				}
+			}
 			void clear() { deallocate_tree(_root); }
 			void deallocate_tree(node_pointer &node)
 			{
@@ -151,15 +170,15 @@ namespace ft
 					node = _root;
 					while (node->left || node->right)
 					{
-						if (node->left && key < node->data.first)
+						if (node->left && _comp(key, node->data.first))
 							node = node->left;
-						else if (node->right && key > node->data.first)
+						else if (node->right && _comp(node->data.first, key))
 							node = node->right;
 						else
 							break;
 					}
 					_node_alloc.construct(new_node, this, value_type(key, value), node);
-					if (key < node->data.first)
+					if (_comp(key, node->data.first))
 						node->left = new_node;
 					else
 						node->right = new_node;
