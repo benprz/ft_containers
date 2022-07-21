@@ -9,12 +9,12 @@ INC =	map.hpp \
 		map_tree.hpp \
 		vector.hpp \
 		iterator.hpp \
-		tree_iterator.hpp \
 		reverse_iterator.hpp \
-		utils.hpp
+		utils.hpp \
+		pair.hpp
 
 SRC_DIR = src/
-SRC = test_map2.cpp
+SRC = unit_tests.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)

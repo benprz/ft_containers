@@ -37,7 +37,7 @@ namespace ft
 	};
 
 	template<typename T>
-	class bidirectional_iterator
+	class map_iterator
 	{
 		public:
 			typedef typename T::value_type			value_type;
@@ -52,52 +52,52 @@ namespace ft
 			T* _ptr;
 
 		public:
-			bidirectional_iterator() {}
-			bidirectional_iterator(T* const ptr) : _ptr(ptr) {}
-			bidirectional_iterator(bidirectional_iterator const &c) : _ptr(c._ptr) {}
-			bidirectional_iterator& operator=(bidirectional_iterator const &c)
+			map_iterator() {}
+			map_iterator(T* const ptr) : _ptr(ptr) {}
+			map_iterator(map_iterator const &c) : _ptr(c._ptr) {}
+			map_iterator& operator=(map_iterator const &c)
 			{
 				_ptr = c._ptr;
 				return *this;	
 			}
-			~bidirectional_iterator() {}
+			~map_iterator() {}
 
-			bool operator==(bidirectional_iterator const &c) const { return _ptr == c._ptr; }
-			bool operator!=(bidirectional_iterator const &c) const { return _ptr != c._ptr; }
+			bool operator==(map_iterator const &c) const { return _ptr == c._ptr; }
+			bool operator!=(map_iterator const &c) const { return _ptr != c._ptr; }
 
 			reference operator*() { return _ptr->data; }
 			pointer operator->() { return &_ptr->data; }
 			const_reference operator*() const { return _ptr->data; }
 			const_pointer operator->() const { return &_ptr->data; }
 
-			bidirectional_iterator& operator++()
+			map_iterator& operator++()
 			{
 				_ptr = _ptr->get_next_node();
 				return *this;
 			}
-			bidirectional_iterator operator++(int)
+			map_iterator operator++(int)
 			{
 				T* it = _ptr;
 				operator++();
-				return bidirectional_iterator(it);
+				return map_iterator(it);
 			}
-			bidirectional_iterator& operator--()
+			map_iterator& operator--()
 			{
 				_ptr = _ptr->get_previous_node();
 				return *this;
 			}
-			bidirectional_iterator operator--(int)
+			map_iterator operator--(int)
 			{
 				T* it = _ptr;
 				operator--();
-				return bidirectional_iterator(it);
+				return map_iterator(it);
 			}
 
 			T* ptr() const { return _ptr; }
 	};
 
 	template<typename T>
-	class bidirectional_const_iterator
+	class const_map_iterator
 	{
 		public:
 			typedef typename T::value_type			value_type;
@@ -110,67 +110,67 @@ namespace ft
 			T* _ptr;
 
 		public:
-			bidirectional_const_iterator() {}
-			bidirectional_const_iterator(T* ptr) : _ptr(ptr) {}
-			bidirectional_const_iterator(bidirectional_iterator<T> const &c) : _ptr(c.ptr()) {}
-			bidirectional_const_iterator(bidirectional_const_iterator const &c) : _ptr(c._ptr) {}
-			bidirectional_const_iterator& operator=(bidirectional_const_iterator const &c)
+			const_map_iterator() {}
+			const_map_iterator(T* ptr) : _ptr(ptr) {}
+			const_map_iterator(map_iterator<T> const &c) : _ptr(c.ptr()) {}
+			const_map_iterator(const_map_iterator const &c) : _ptr(c._ptr) {}
+			const_map_iterator& operator=(const_map_iterator const &c)
 			{
 				_ptr = c._ptr;
 				return *this;
 			}
-			~bidirectional_const_iterator() {}
+			~const_map_iterator() {}
 
-			bool operator==(bidirectional_const_iterator const &c) const { return _ptr == c._ptr; }
-			bool operator!=(bidirectional_const_iterator const &c) const { return _ptr != c._ptr; }
+			bool operator==(const_map_iterator const &c) const { return _ptr == c._ptr; }
+			bool operator!=(const_map_iterator const &c) const { return _ptr != c._ptr; }
 
 			reference operator*() const { return _ptr->data; }
 			pointer operator->() const { return &_ptr->data; }
 
-			bidirectional_const_iterator& operator++()
+			const_map_iterator& operator++()
 			{
 				_ptr = _ptr->get_next_node();
 				return *this;
 			}
-			bidirectional_const_iterator operator++(int)
+			const_map_iterator operator++(int)
 			{
 				T* it = _ptr;
 				operator++();
-				return bidirectional_const_iterator(it);
+				return const_map_iterator(it);
 			}
-			bidirectional_const_iterator& operator--()
+			const_map_iterator& operator--()
 			{
 				_ptr = _ptr->get_previous_node();
 				return *this;
 			}
-			bidirectional_const_iterator operator--(int)
+			const_map_iterator operator--(int)
 			{
 				T* it = _ptr;
 				operator--();
-				return bidirectional_const_iterator(it);
+				return const_map_iterator(it);
 			}
 	};
 
 	template <typename T>
-    bool operator==(const ft::bidirectional_iterator<T> lhs, const ft::bidirectional_iterator<T> rhs)
+    bool operator==(const ft::map_iterator<T> lhs, const ft::map_iterator<T> rhs)
     {
         return (lhs.operator*() == rhs.operator*());
     }
 
     template<typename T_L, typename T_R>
-    bool operator==(const ft::bidirectional_iterator<T_L> lhs, const ft::bidirectional_iterator<T_R> rhs)
+    bool operator==(const ft::map_iterator<T_L> lhs, const ft::map_iterator<T_R> rhs)
     {
         return (lhs.operator*() == rhs.operator*());
     }
 
     template <typename T>
-    bool operator!=(const ft::bidirectional_iterator<T> lhs, const ft::bidirectional_iterator<T> rhs)
+    bool operator!=(const ft::map_iterator<T> lhs, const ft::map_iterator<T> rhs)
     {
         return (lhs.operator*() != rhs.operator*());
     }
 
     template<typename T_L, typename T_R>
-    bool operator!=(const ft::bidirectional_iterator<T_L> lhs, const ft::bidirectional_iterator<T_R> rhs)
+    bool operator!=(const ft::map_iterator<T_L> lhs, const ft::map_iterator<T_R> rhs)
     {
         return (lhs.operator*() != rhs.operator*());
     }
@@ -268,7 +268,7 @@ namespace ft
 	};
 
 	template <typename T>
-	class random_access_iterator
+	class vector_iterator
 	{
 		public:
 			typedef T								value_type;
@@ -281,120 +281,67 @@ namespace ft
 			pointer _current;
 
 		public:
-			random_access_iterator() : _current(NULL) {}
-			random_access_iterator (pointer ptr) : _current(ptr) {}
-			random_access_iterator (const random_access_iterator& other ) : _current(other._current) {}
-			random_access_iterator& operator=(const random_access_iterator& other)
+			vector_iterator() : _current(NULL) {}
+			vector_iterator (pointer ptr) : _current(ptr) {}
+			vector_iterator (const vector_iterator& other ) : _current(other._current) {}
+			vector_iterator& operator=(const vector_iterator& other)
 			{
 				_current = other._current;
 				return *this;
 			}
-			~random_access_iterator() {}
+			~vector_iterator() {}
 
-			operator random_access_iterator<const T> () const { return (_current); }
+			operator vector_iterator<const T> () const { return (_current); }
 
-			bool operator==(const random_access_iterator &other) const { return (_current == other._current); }
-			bool operator!=(const random_access_iterator &other) const { return (_current != other._current); }
+			bool operator==(const vector_iterator &other) const { return (_current == other._current); }
+			bool operator!=(const vector_iterator &other) const { return (_current != other._current); }
 
 			reference	operator*() const { return (*_current); }
-		/*
-			pointer	operator->() const { return (_current); }
+			pointer		operator->() const { return (&(operator*())); }
 
-			random_access_iterator& operator++(void) 
-			{
-				_current++;
-				return (*this); 
-			}
-			random_access_iterator operator++(int)
-			{
-				random_access_iterator tmp = *this;
-				_current++;
-				return (tmp);
-			}
-			random_access_iterator& operator--(void) 
-			{
-				_current--;
-				return (*this); 
-			}
-			random_access_iterator operator--(int)
-			{
-				random_access_iterator tmp = *this;
-				_current--;
-				return (tmp);
-			}
-
-			random_access_iterator	operator+(const int i) const { return (random_access_iterator(_current + i)); }
-			random_access_iterator	operator-(const difference_type i) const { return (random_access_iterator(_current - i)); }
-			difference_type	operator-(const random_access_iterator &other) const { return (_current - other._current); }
-
-			bool	operator<(const random_access_iterator &other) const { return (_current < other._current); }
-			bool	operator>(const random_access_iterator &other) const { return (_current > other._current); }
-			bool	operator<=(const random_access_iterator &other) const { return (_current <= other._current); }
-			bool	operator>=(const random_access_iterator &other) const { return (_current >= other._current); }
-
-			random_access_iterator&	operator+=(difference_type i) 
-			{
-				_current += i; 
-				return (*this);
-			}
-			random_access_iterator&	operator-=(difference_type i)
-			{
-				_current -= i;
-				return (*this);
-			}
-
-			reference	operator[](const difference_type i) const { return (_current[i]); }
-			*/
-
-
-			pointer		operator->() const
-			{
-				return (&(this->operator*()));
-			}
-
-			random_access_iterator&	operator++()
+			vector_iterator&	operator++()
 			{
 				++_current;
 				return (*this);
 			}
 
-			random_access_iterator	operator++(int)
+			vector_iterator	operator++(int)
 			{
-				random_access_iterator tmp(*this);
+				vector_iterator tmp(*this);
 				operator++();
 				return (tmp);
 			}
 
-			random_access_iterator&	operator--()
+			vector_iterator&	operator--()
 			{
 				--_current;
 				return (*this);
 			}
 
-			random_access_iterator	operator--(int)
+			vector_iterator	operator--(int)
 			{
-				random_access_iterator tmp(*this);
+				vector_iterator tmp(*this);
 				operator--();
 				return (tmp);
 			}
 
-			random_access_iterator	operator+(difference_type n) const
+			vector_iterator	operator+(difference_type n) const
 			{
 				return (_current + n);
 			}
 
-			random_access_iterator	operator-(difference_type n) const
+			vector_iterator	operator-(difference_type n) const
 			{
 				return (_current - n);
 			}
 
-			random_access_iterator	operator+=(difference_type n)
+			vector_iterator	operator+=(difference_type n)
 			{
 				_current += n;
 				return (*this);
 			}
 
-			random_access_iterator	operator-=(difference_type n)
+			vector_iterator	operator-=(difference_type n)
 			{
 				_current -= n;
 				return (*this);
@@ -405,12 +352,12 @@ namespace ft
 				return (*(_current + n));
 			}
 
-			friend bool operator==(const random_access_iterator<T> &it1, const random_access_iterator<T> &it2)
+			friend bool operator==(const vector_iterator<T> &it1, const vector_iterator<T> &it2)
 			{
 				return (it1._current == it2._current);
 			}
 
-			friend bool operator!=(const random_access_iterator<T> &it1, const random_access_iterator<T> &it2)
+			friend bool operator!=(const vector_iterator<T> &it1, const vector_iterator<T> &it2)
 			{
 				return (it1._current != it2._current);
 			}
@@ -419,7 +366,7 @@ namespace ft
 	};
 			
 	template <typename T>
-	random_access_iterator<T> operator+(typename random_access_iterator<T>::difference_type n, random_access_iterator<T> it) { return (random_access_iterator<T>(&*it + n)); }
+	vector_iterator<T> operator+(typename vector_iterator<T>::difference_type n, vector_iterator<T> it) { return (vector_iterator<T>(&*it + n)); }
 
 	template< class Iter >
 	class reverse_iterator

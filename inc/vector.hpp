@@ -4,6 +4,7 @@
 #pragma once
 
 #include "iterator.hpp"
+#include "utils.hpp"
 
 #include <memory>
 #include <iostream>
@@ -31,8 +32,8 @@ namespace ft
 			typedef typename allocator_type::const_reference				const_reference;
 			typedef typename allocator_type::pointer         				pointer;
 			typedef typename allocator_type::const_pointer					const_pointer;
-			typedef	typename ft::random_access_iterator<value_type>			iterator;
-			typedef typename ft::random_access_iterator<const value_type>	const_iterator;
+			typedef	typename ft::vector_iterator<value_type>				iterator;
+			typedef typename ft::vector_iterator<const value_type>			const_iterator;
 			typedef typename ft::reverse_iterator<iterator>					reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
@@ -367,6 +368,8 @@ namespace ft
 			}
 	};
 
+	using std::swap;
+
 	// NON-MEMBER FUNCTIONS
 	template< class T, class Alloc >
 	void swap( ft::vector<T,Alloc>& lhs, ft::vector<T,Alloc>& rhs )
@@ -378,14 +381,7 @@ namespace ft
 	bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs )
 	{
 		if (lhs.size() == rhs.size())
-		{
-			for (size_t i = 0; i < lhs.size(); i++)
-			{
-				if (lhs[i] != rhs[i])
-					return false;
-			}
-			return true;
-		}
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		return false;
 	};
 	template< class T, class Alloc >
@@ -396,7 +392,7 @@ namespace ft
 	template< class T, class Alloc >
 	bool operator<( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )
 	{
-		return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	};
 	template< class T, class Alloc >
 	bool operator<=( const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs )

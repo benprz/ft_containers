@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "tree_iterator.hpp"
+#include "iterator.hpp"
 #include "pair.hpp"
 
 namespace ft
@@ -92,8 +92,8 @@ namespace ft
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef _node_tree<map_tree, value_type, key_compare> node;
 			typedef _node_tree<map_tree, value_type, key_compare>* node_pointer;
-			typedef typename ft::tree_iterator<node> iterator;
-			typedef typename ft::const_tree_iterator<node> const_iterator;
+			typedef typename ft::map_iterator<node> iterator;
+			typedef typename ft::const_map_iterator<node> const_iterator;
 
 		private:
 			key_compare	_comp;

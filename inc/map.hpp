@@ -33,8 +33,8 @@ namespace ft
 			typedef typename ft::map_tree<key_type, mapped_type, key_compare, allocator_type>	tree;
 			typedef typename tree::iterator								iterator;
 			typedef typename tree::const_iterator						const_iterator;
-			typedef ft::tree_reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::tree_reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 			class value_compare : std::binary_function<value_type, value_type, bool>
 			{

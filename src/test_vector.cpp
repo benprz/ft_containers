@@ -2,7 +2,7 @@
 #include <vector>
 
 #include <map>
-#include "map.hpp"
+//#include "map.hpp"
 
 #include <iterator>
 #include <iostream>
@@ -49,6 +49,7 @@ void	checkErase(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct,
 	//printSize(vct);
 }
 
+/*
 int		main(void)
 {
 
@@ -60,7 +61,6 @@ int		main(void)
 
 	checkErase(vct, vct.erase(vct.begin() + 2));
 
-/*
 	checkErase(vct, vct.erase(vct.begin()));
 	checkErase(vct, vct.erase(vct.end() - 1));
 
@@ -79,14 +79,14 @@ int		main(void)
 	//printSize(vct);
 	checkErase(vct, vct.erase(vct.begin(), vct.end()));
 
-*/
 
 	return (0);
 }
+*/
 
-/*
 int main()
 {
+	/*
 	std::vector<int> vec;
 	
 	vec.push_back(0);
@@ -176,9 +176,10 @@ int main()
 
 	vec2.insert(vec2.begin(), vec.begin(), vec.end());
 
-	swap_test(ft::vector<int>());
+	//swap_test(ft::vector<int>());
 
 
     return v[0];
+	*/
+	std::vector<int> vec;
 }
-*/
