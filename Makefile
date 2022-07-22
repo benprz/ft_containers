@@ -12,14 +12,14 @@ INC =	map.hpp \
 		utils.hpp
 
 SRC_DIR = src/
-SRC = subject_test.cpp
+SRC = main.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
 
 .PHONY : all clean fclean re exec
 
-all: $(NAME)
+all: $(NAME) exec
 
 $(NAME): $(OBJ)
 	$(CC) $(CPPFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)
