@@ -54,7 +54,7 @@ namespace ft
 					_alloc.construct(_container + i, value);
 			};
 			template< class InputIt > 
-			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
+			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIt>::value, int>::type = 0)
 				: _alloc(alloc)
 			{
 				size_type dist = std::distance(first, last);
@@ -102,7 +102,7 @@ namespace ft
 					_container[i] = value;
 			};
 			template< class InputIt >
-			void assign( InputIt first, InputIt last, typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
+			void assign( InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, int>::type = 0)
 			{
 				size_type dist = std::distance(first, last); 
 				if (dist > _capacity)
@@ -224,7 +224,7 @@ namespace ft
 				_size += count;
 			};
 			template< class InputIt >
-			void insert( iterator pos, InputIt first, InputIt last, typename std::enable_if<!std::is_integral<InputIt>::value, int>::type = 0)
+			void insert( iterator pos, InputIt first, InputIt last, typename ft::enable_if<!ft::is_integral<InputIt>::value, int>::type = 0)
 			{
 				if (!_check_iterators_copy_assignability(first, last))
 					throw std::exception();
@@ -367,8 +367,6 @@ namespace ft
 				return ret;
 			}
 	};
-
-	using std::swap;
 
 	// NON-MEMBER FUNCTIONS
 	template< class T, class Alloc >

@@ -2,19 +2,17 @@
 
 NAME = ft_containers
 CC = clang++
-CPPFLAGS =  #-fsanitize=address#-std=c++98#-Wextra -Wall -Werror
+CPPFLAGS = -std=c++98 -Wextra -Wall -Werror
 CPPFLAGS += -g3
 INC_DIR = inc/
 INC =	map.hpp \
 		map_tree.hpp \
 		vector.hpp \
 		iterator.hpp \
-		reverse_iterator.hpp \
-		utils.hpp \
-		pair.hpp
+		utils.hpp
 
 SRC_DIR = src/
-SRC = unit_tests.cpp
+SRC = subject_test.cpp
 
 OBJ_DIR = .obj/
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)

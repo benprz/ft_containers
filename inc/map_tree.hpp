@@ -7,7 +7,6 @@
 #include <iomanip>
 
 #include "iterator.hpp"
-#include "pair.hpp"
 
 namespace ft
 {
@@ -192,39 +191,6 @@ namespace ft
 			{
 				(void)position;
 				return insert_node(key, value);
-				/*
-				node_pointer node = search_node(key);
-				if (node != &_end_stack_node_object)
-					return iterator(node);
-
-				node_pointer new_node = _node_alloc.allocate(1);
-				if (!_root)
-				{
-					_node_alloc.construct(new_node, this, value_type(key, value));
-					_root = new_node;
-				}
-				else
-				{
-					node = position.ptr();
-					while (node->left || node->right)
-					{
-						if (node->left && key < node->data.first)
-							node = node->left;
-						else if (node->right && key > node->data.first)
-							node = node->right;
-						else
-							break;
-					}
-					_node_alloc.construct(new_node, this, value_type(key, value), node);
-					if (key < node->data.first)
-						node->left = new_node;
-					else
-						node->right = new_node;
-					keep_node_balance(node);
-				}
-				_size++;
-				return iterator(new_node);
-				*/
 			}
 			node_pointer search_node(const key_type key)
 			{
@@ -285,9 +251,6 @@ namespace ft
 				node_pointer node = search_node(key);
 				if (node != &_end_stack_node_object)
 				{
-					//std::cout << "> ERASE(" << key << ") !!!!!!!" << std::endl;
-					//print_tree();
-
 					node_pointer successor = node->get_next_node();
 					if (!node->left && !node->right && node->parent)
 					{
@@ -351,10 +314,7 @@ namespace ft
 					_size--;
 					_node_alloc.destroy(node);
 					_node_alloc.deallocate(node, 1);
-					//print_tree();
-					//std::cout << "keep balance(" << successor->data.first << ")" << std::endl;
 					keep_node_balance(successor);	
-					//print_tree();
 					return 1;
 				}
 				return 0;
@@ -405,19 +365,14 @@ namespace ft
 			}
 			void keep_node_balance(node_pointer node)
 			{
-				//print_tree();
 				while (node)
 				{
-					//std::cout << "keep_node_balance(" << node->data.first << ")" << std::endl;
 					int bf = compute_balance_factor(node);
-					// std::cout << "bf(" << node->data.first << ")=" << bf << std::endl;
 					if (bf == -2 || bf == 2)
 					{
-						//std::cout << "checking childs\n";
 						int lc_bf = compute_balance_factor(node->left);
 						int rc_bf = compute_balance_factor(node->right);
 
-						//std::cout << "bf=" << bf << " lc_bf=" << lc_bf << " rc_bf=" << rc_bf << std::endl;
 						if (lc_bf == 0 && rc_bf == 0)
 						{
 							if (node->left && !node->left->left && node->right->right)
@@ -426,47 +381,35 @@ namespace ft
 								lc_bf = -1;
 						}
 						if (bf == 2 && lc_bf == 1) // 3 2 1
-						{
-							// std::cout << "right r" << std::endl;
 							rotate_right(node);
-						}
 						else if (bf == -2 && rc_bf == -1) // 1 2 3
-						{
-							//std::cout << "left r" << std::endl;
 							rotate_left(node);
-						}
 						else if (bf == 2 && lc_bf == -1)
 						{
-							//std::cout << "left right rotation" << std::endl;
 							rotate_left(node->left);
 							rotate_right(node);
 						}
 						else if (bf == -2 && rc_bf == 1)
 						{
-							//std::cout << "right left rotation" << std::endl;
 							rotate_right(node->right);
 							rotate_left(node);
 						}
 					}
 					node = node->parent;
 				}
-				//print_tree();
 			}
 			int get_node_height(node_pointer node)
 			{
 				int height = 0;
 				node_pointer node2 = _root;
-				////std::cout << "get_node_height->" << node->data.first << " root=" << _root->data.first << std::endl;
 				while (node2 != node && node2)
 				{
-					////std::cout << "node2=" << node2->data.first << std::endl;
 					if (node->data.first < node2->data.first)
 						node2 = node2->left;
 					else
 						node2 = node2->right;
 					height++;
 				}
-				////std::cout << "height=" << height << std::endl;
 				return height;
 
 			}
@@ -474,7 +417,6 @@ namespace ft
 			{
 				if (node)
 				{
-					////std::cout << "compute_node_height -> " << node->data.first << std::endl;
 					int node_height = get_node_height(node);
 					compute_node_height(node->left, height);
 					compute_node_height(node->right, height);
@@ -487,18 +429,18 @@ namespace ft
 				if (node)
 				{
 					int node_height = get_node_height(node);
-					//std::cout << node->data.first << "->height = " << node_height << std::endl;
 					int left_height = node_height;
 					int right_height = node_height;
 					compute_node_height(node->left, left_height);
 					compute_node_height(node->right, right_height);
 					left_height -= node_height;
 					right_height -= node_height;
-					//printf("node=%d bf=%d lc=%d rc=%d\n", node->data.first, left_height - right_height, left_height, right_height);
 					return (left_height - right_height);
 				}
 				return 0;
 			}
+
+			//DEBUG FUNCTIONS
 			int compute_tree_height()
 			{
 				int height = 0;
