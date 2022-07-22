@@ -19,7 +19,7 @@ OBJ = $(SRC:%.cpp=$(OBJ_DIR)%.o)
 
 .PHONY : all clean fclean re exec
 
-all: $(NAME) exec
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CPPFLAGS) -I$(INC_DIR) $(OBJ) -o $(NAME)

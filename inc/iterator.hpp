@@ -333,7 +333,7 @@ namespace ft
 			}
 			
 			pointer operator->() const { return &(operator*()); }
-			reference operator[] (difference_type n) const { return (_base[-n - 1]); }
+			reference operator[] (difference_type n) const { return (base()[-n - 1]); }
 
 	};
 

@@ -7,6 +7,7 @@
 #include <iomanip>
 
 #include "iterator.hpp"
+#include "utils.hpp"
 
 namespace ft
 {
