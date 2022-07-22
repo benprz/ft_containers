@@ -216,8 +216,9 @@ namespace ft
 			}
 			node_pointer upper_bound(const key_type& k) const
 			{
-				node_pointer node = lower_bound(k);
-				node = node->get_next_node();
+				node_pointer node = begin();
+				while (node != &_end_stack_node_object && !_comp(k, node->data.first))
+					node = node->get_next_node();
 				return node;
 			}
 			node_pointer leftmost_node() const { return leftmost_node(_root); }

@@ -2,7 +2,7 @@
 
 NAME = ft_containers
 CC = clang++
-CPPFLAGS = -std=c++98 -Wextra -Wall -Werror
+CPPFLAGS = -std=c++98 #-Wextra -Wall -Werror
 CPPFLAGS += -g3
 INC_DIR = inc/
 INC =	map.hpp \
