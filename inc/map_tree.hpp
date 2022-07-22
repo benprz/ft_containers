@@ -19,14 +19,15 @@ namespace ft
 			typedef T value_type;
 			typedef std::size_t	size_type;
 
-			Tree *tree;
 			T data;
+			Tree *tree;
 			Compare comp;
 			node_pointer parent;
 			node_pointer left;
 			node_pointer right;
 
 			_node_tree() : data(), parent(NULL), left(NULL), right(NULL) {}
+			_node_tree(T data) : data(data), tree(NULL), parent(NULL), left(NULL), right(NULL) {}
 			_node_tree(Tree *tree, T data, node_pointer parent = NULL) : tree(tree), data(data), parent(parent), left(NULL), right(NULL) {}
 
 			node_pointer get_previous_node() const
@@ -162,7 +163,8 @@ namespace ft
 				node_pointer new_node = _node_alloc.allocate(1);
 				if (!_root)
 				{
-					_node_alloc.construct(new_node, this, value_type(key, value));
+					_node_alloc.construct(new_node, value_type(key, value));
+					new_node->tree = this;
 					_root = new_node;
 				}
 				else
@@ -177,7 +179,9 @@ namespace ft
 						else
 							break;
 					}
-					_node_alloc.construct(new_node, this, value_type(key, value), node);
+					_node_alloc.construct(new_node, value_type(key, value));
+					new_node->tree = this;
+					new_node->parent = node;
 					if (_comp(key, node->data.first))
 						node->left = new_node;
 					else
@@ -185,7 +189,6 @@ namespace ft
 					keep_node_balance(node);
 				}
 				_size++;
-				//print_tree();
 				return iterator(new_node);
 			}
 			iterator insert_node(iterator position, key_type key, mapped_type value)
