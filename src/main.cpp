@@ -1,13 +1,23 @@
 #include "map.hpp"
 #include "vector.hpp"
+#include "stack.hpp"
 
 #include <vector>
 #include <map>
+#include <stack>
 
 #define N ft
 
 int main()
 {
+	ft::stack<int> stack;
+
+	stack.push(5);
+	std::cout << stack.top() << std::endl;
+	ft::stack<int> stack2(stack);
+	if (stack == stack2)
+		std::cout << "stack!" << std::endl;
+	/*
 	std::cout << "#VECTOR" << std::endl;
 	N::vector<int> vec(20, 42);
 	N::vector<int>::iterator it = vec.begin();
@@ -100,6 +110,7 @@ int main()
 	std::cout << map.size() << " " << map.empty() << std::endl;
 	map.erase(map.begin(), map.end());
 	std::cout << map.size() << " " << map.empty() << std::endl;
+*/
 
 	return 0;
 }

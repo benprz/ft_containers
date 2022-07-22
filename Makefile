@@ -8,6 +8,7 @@ INC_DIR = inc/
 INC =	map.hpp \
 		map_tree.hpp \
 		vector.hpp \
+		stack.hpp \
 		iterator.hpp \
 		utils.hpp
 
