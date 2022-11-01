@@ -1,9 +1,8 @@
-make all --dry-run --keep-going --print-directory
+make all --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/neben/Documents/42/ft_containers'
 mkdir -p .obj
-c++ -g3 -std=c++98  -Iinc/ -c src/main.cpp -o .obj/main.o
-c++  -Iinc/ .obj/main.o -o ft_containers
+clang++  -fsanitize=address -g3 -Iinc/ -c src/test_map.cpp -o .obj/test_map.o
+clang++  -fsanitize=address -g3 -Iinc/ .obj/test_map.o -o ft_containers
 ./ft_containers
- 
 make: Leaving directory `/Users/neben/Documents/42/ft_containers'
  
